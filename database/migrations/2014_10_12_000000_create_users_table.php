@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string('user_name')->nullable();
             $table->string('avatar_link')->nullable();
             $table->string('phone_number')->nullable();
-            $table->bigInteger('birth_day')->nullable();
+            $table->string('provider')->default('password');
+            $table->date('birthday')->nullable();
             $table->bigInteger('last_login')->nullable();
             $table->integer('status')->default(1);
+            $table->integer('role')->default(0);
             $table->string('password')->nullable();
-            $table->bigInteger('created_at')->nullable();
-            $table->bigInteger('updated_at')->nullable();
+            $table->timestamps();
         });
     }
 

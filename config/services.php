@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'firebase' => [
+        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'),
+        'host' => env('FIREBASE_FILE_HOST'),
+    ]
+
 ];

@@ -1456,7 +1456,7 @@ $(document).ready(function(){
 
 $(document).ready(function() {
 
-    
+
     var readURL = function(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -1464,16 +1464,16 @@ $(document).ready(function() {
             reader.onload = function (e) {
                 $('.profile-pic').attr('src', e.target.result);
             }
-    
+
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
+
 
     $(".file-upload").on('change', function(){
         readURL(this);
     });
-    
+
     $(".upload-button").on('click', function() {
        $(".file-upload").click();
     });
@@ -1515,7 +1515,7 @@ $(document).ready(function() {
 
         var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
         chart.render();
-      
+
       }
 
     // top chart 2
@@ -1557,7 +1557,7 @@ $(document).ready(function() {
         var chart = new ApexCharts(document.querySelector("#view-chart-02"), options);
         chart.render();
     }
-      
+
 // top chart 2
  if(jQuery('#view-chart-03').length){
         var options = {
@@ -1613,6 +1613,6 @@ $(document).ready(function() {
         var chart = new ApexCharts(document.querySelector("#view-chart-03"), options);
         chart.render();
     }
-      
-    
+
+
 

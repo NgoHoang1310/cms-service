@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,6 @@ use Illuminate\Support\Facades\View;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/test', function () {
-    return view('test');
-});
 
 // Auth Routes
 Route::get('/sign-in', function () {
@@ -35,4 +32,16 @@ Route::get('/', function () {
 });
 
 // User Routes
-Route::get('/user', [UserController::class, 'index']);
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::get('/users/{user}', [UserController::class, 'edit'])->name('users.edit');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+//Movie Routes
+Route::resource('movies', MovieController::class);
+
+//Category Routes
+Route::resource('categories', CategoryController::class);
+

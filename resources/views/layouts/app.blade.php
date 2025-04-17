@@ -16,16 +16,20 @@
         content="premium, admin, dashboard, template, bootstrap 5, clean ui, streamit, admin dashboard,responsive dashboard, optimized dashboard,">
     <meta name="author" content="Iqonic Design">
     <meta name="DC.title" content="Streamit Responsive Bootstrap 5 Admin Dashboard Template">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css') }}"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="{{ asset("css/core/libs.min.css") }}">
 
     <link rel="stylesheet" href="{{ asset("vendor/sheperd/dist/css/sheperd.css") }}">
+
+    <!-- Sweetlaert2 css -->
+    <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}">
+
 
     <!-- Flatpickr css -->
     <link rel="stylesheet" href="{{ asset("vendor/flatpickr/dist/flatpickr.min.css") }}">
@@ -59,7 +63,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300&amp;display=swap"
         rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset("vendor/select2/dist/css/select2.min.css") }}">
 </head>
 
@@ -90,6 +94,8 @@
     <!-- Wrapper End-->
     <!-- Live Customizer start -->
     <!-- Setting offcanvas start here -->
+    <x-drawer>
+    </x-drawer>
     <div class="offcanvas offcanvas-end live-customizer" tabindex="-1" id="live-customizer" data-bs-backdrop="false"
         data-bs-scroll="true" aria-labelledby="live-customizer-label" aria-modal="true" role="dialog">
         <div class="offcanvas-header pb-0">
@@ -524,11 +530,13 @@
     <!-- Slider-tab Script -->
     <script src="{{ asset('js/plugins/slider-tabs.js') }}"></script>
 
+    <!-- Sweet-alert Script -->
+    <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" async></script>
+    <script src="{{ asset('js/plugins/sweet-alert.js') }}" defer></script>
 
 
 
 
-    <!-- SwiperSlider Script -->
     <script src="{{ asset('vendor/swiperSlider/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('js/plugins/swiper-slider.js') }}" defer></script>
     <!-- Lodash Utility -->
@@ -555,7 +563,30 @@
     <script src="{{ asset('js/plugins/flatpickr848f.js?v=5.2.1') }}" defer></script>
 
     <script src="{{ asset('js/plugins/countdown848f.js?v=5.2.1') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+            toastr.success("{{ session('success') }}", "Thành công");
+            @endif
 
+            @if (session()->has('errors'))
+            toastr.error("{{ $errors->first() }}", "Lỗi");
+            @endif
+
+            @if (session('error'))
+            toastr.error("{{ session('error') }}", "Lỗi");
+            @endif
+
+            @if (session('warning'))
+            toastr.warning("{{ session('warning') }}", "Cảnh báo");
+            @endif
+
+            @if (session('info'))
+            toastr.info("{{ session('info') }}", "Thông báo");
+            @endif
+        });
+    </script>
 </body>
 
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\View\Composers;
 
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class SidebarComposer
@@ -10,61 +11,56 @@ class SidebarComposer
         $currentPath = request()->path();
         $sidebarMenu = [
             [
-                'title' => 'Dashboard',
+                'title' => 'Bảng điều khiển',
                 'icon' => 'dashboard',
                 'link' => '/',
             ],
             [
-                'title' => 'Rating',
-                'icon' => 'rating',
-                'link' => 'rating',
-            ],
-            [
-                'title' => 'Comments',
-                'icon' => 'comment',
-                'link' => 'comment',
-            ],
-            [
-                'title' => 'Users',
+                'title' => 'Tài khoản',
                 'icon' => 'users',
-                'link' => 'user',
+                'link' => '/users',
             ],
             [
-                'title' => 'Movie List',
+                'title' => 'Phim lẻ',
                 'icon' => 'movie',
-                'link' => 'movie/movie-list.html',
+                'link' => '/movies',
             ],
             [
-                'title' => 'TV Shows',
+                'title' => 'Phim bộ',
                 'icon' => 'tv-show',
                 'children' => [
                     [
-                        'title' => 'Show Lists',
+                        'title' => 'Danh sách phim',
                         'link' => 'tv-shows/show-list.html',
                     ],
                     [
-                        'title' => 'Seasons',
+                        'title' => 'Mùa phim',
                         'link' => 'tv-shows/season.html',
                     ],
                     [
-                        'title' => 'Episodes',
+                        'title' => 'Tập phim',
                         'link' => 'tv-shows/episodes.html',
                     ]
                 ]
             ],
             [
-                'title' => 'Pricing',
+                'title' => 'Danh mục phim',
                 'icon' => 'pricing',
-                'link' => 'special-pages/pricing.html',
+                'link' => '/categories',
+            ],
+            [
+                'title' => 'Thể loại phim',
+                'icon' => 'pricing',
+                'link' => '/genres',
             ]
         ];
 
         foreach ($sidebarMenu as &$item) {
             if (isset($item['link'])) {
-                $item['active'] = $currentPath === $item['link'];
+                $item['active'] = Str::startsWith($currentPath, ltrim($item['link'], '/'));
             } elseif (isset($item['children'])) {
                 foreach ($item['children'] as &$child) {
-                    $child['active'] = $currentPath === $child['link'];
+                    $child['active'] = Str::startsWith($currentPath, ltrim($child['link'], '/'));
                 }
 
                 // Đánh dấu active cho cha nếu 1 trong các con đang active

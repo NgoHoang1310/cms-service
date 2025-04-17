@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\services\FirebaseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -12,122 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $model = [
-            [
-                'id' => 1,
-                'avatar' => 'https://i.pravatar.cc/150?img=1',
-                'name' => 'Ngô Hoàng',
-                'phone' => '0343027930',
-                'email' => 'ngohoang1310@gmail.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'Vuasoft',
-                'joinDate' => '12/04/2025',
-            ],
-            [
-                'id' => 2,
-                'avatar' => 'https://i.pravatar.cc/150?img=2',
-                'name' => 'Trần Văn A',
-                'phone' => '0987654321',
-                'email' => 'vana@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'TechNova',
-                'joinDate' => '10/01/2025',
-            ],
-            [
-                'id' => 3,
-                'avatar' => 'https://i.pravatar.cc/150?img=3',
-                'name' => 'Lê Thị B',
-                'phone' => '0912345678',
-                'email' => 'lethib@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Tạm ngưng',
-                'company' => 'FPT',
-                'joinDate' => '22/02/2025',
-            ],
-            [
-                'id' => 4,
-                'avatar' => 'https://i.pravatar.cc/150?img=4',
-                'name' => 'Nguyễn Văn C',
-                'phone' => '0901122334',
-                'email' => 'nguyenvanc@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'VNG',
-                'joinDate' => '05/03/2025',
-            ],
-            [
-                'id' => 5,
-                'avatar' => 'https://i.pravatar.cc/150?img=5',
-                'name' => 'Phạm Thị D',
-                'phone' => '0933445566',
-                'email' => 'phamthid@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'TMA Solutions',
-                'joinDate' => '01/04/2025',
-            ],
-            [
-                'id' => 6,
-                'avatar' => 'https://i.pravatar.cc/150?img=6',
-                'name' => 'Hoàng Minh',
-                'phone' => '0977889900',
-                'email' => 'hoangminh@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Tạm ngưng',
-                'company' => 'CMC Corp',
-                'joinDate' => '15/01/2025',
-            ],
-            [
-                'id' => 7,
-                'avatar' => 'https://i.pravatar.cc/150?img=7',
-                'name' => 'Đỗ Trung',
-                'phone' => '0922334455',
-                'email' => 'dotrung@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'Misa',
-                'joinDate' => '20/02/2025',
-            ],
-            [
-                'id' => 8,
-                'avatar' => 'https://i.pravatar.cc/150?img=8',
-                'name' => 'Bùi Thị Yến',
-                'phone' => '0966778899',
-                'email' => 'buyen@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'Haravan',
-                'joinDate' => '18/03/2025',
-            ],
-            [
-                'id' => 9,
-                'avatar' => 'https://i.pravatar.cc/150?img=9',
-                'name' => 'Trịnh Công Sơn',
-                'phone' => '0911223344',
-                'email' => 'tcs@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Tạm ngưng',
-                'company' => 'Zalo',
-                'joinDate' => '25/03/2025',
-            ],
-            [
-                'id' => 10,
-                'avatar' => 'https://i.pravatar.cc/150?img=10',
-                'name' => 'Lương Bích Hữu',
-                'phone' => '0909090909',
-                'email' => 'huuluong@example.com',
-                'country' => 'Việt Nam',
-                'status' => 'Đang hoạt động',
-                'company' => 'Tiki',
-                'joinDate' => '02/04/2025',
-            ],
-        ];
-        
-        return view('user/user',[
-            'model' => $model,
-        ] );
+        $query = User::query();
+        $users = $query->get();
+
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -135,15 +26,40 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $user = new User();
+        if (request()->ajax()) {
+            return response()->json([
+                'html' => view('users.create', compact('user'))->render()
+            ]);
+        }
+
+        return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request, FirebaseService $firebaseService)
     {
-        //
+        try {
+            // Khởi tạo data từ request
+            $data = $request->only(['user_name', 'email', 'password', 'role', 'phone_number', 'birthday']);
+            $firebaseData = $request->only(['user_name', 'email', 'password']);
+
+            // Cập nhật Firebase
+            $user = $firebaseService->createUser($firebaseData);
+            if(!$user) {
+                return redirect()->back()->with('error', 'Tạo tài khoản thất bại. Vui lòng thử lại sau.');
+            }
+            $data['uuid'] = $user->uid;
+            $data['provider'] = $user->providerData[0]->providerId;
+
+            User::query()->insert($data);
+
+            return redirect()->route('users.index')->with('success', 'Tạo tài khoản thành công');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Tạo tài khoản thất bại: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -159,15 +75,46 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        if (request()->ajax()) {
+            return response()->json([
+                'html' => view('users.edit', compact('user'))->render()
+            ]);
+        }
+
+        return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user, FirebaseService $firebaseService)
     {
-        //
+        try {
+            // Khởi tạo data từ request
+            $data = $request->only(['user_name', 'email', 'password', 'phone_number', 'birthday', 'role', 'status']);
+            $firebaseData = $request->only(['user_name', 'email', 'password']);
+
+            // Xử lý avatar nếu có
+            if ($request->hasFile('avatar_link')) {
+                $avatarFile = $request->file('avatar_link');
+                $firebaseService->deleteFileFromFirebase($user->avatar_link);
+                $avatarUrl = $firebaseService->uploadFileToFirebase($avatarFile, 'avatars/' . $user->uuid);
+                $data['avatar_link'] = $avatarUrl['path'];
+                $firebaseData['avatar_link'] = $avatarUrl['url'];
+            }
+
+            // Cập nhật Firebase
+            if(!$firebaseService->updateUserProfile($user->uuid, $firebaseData)) {
+                return redirect()->back()->with('error', 'Cập nhật tài khoản thất bại. Vui lòng thử lại sau.');
+            }
+
+            // Cập nhật database
+            $user->update($data);
+
+            return redirect()->route('users.index')->with('success', 'Cập nhật tài khoản thành công');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Cập nhật tài khoản thất bại: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -175,6 +122,24 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $auth = app('firebase.auth');
+        DB::beginTransaction();
+        try {
+            $auth->deleteUser($user->uuid);
+            $user->delete();
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully.'
+            ]);
+
+        } catch (\Exception $exception) {
+            // Handle exception
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Deletion failed: ' . $exception->getMessage()
+            ]);
+        }
     }
 }
