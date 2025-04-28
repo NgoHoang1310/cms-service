@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <h2 class="mb-5">Tạo phim mới</h2>
-                <form method="POST" class="needs-validation" novalidate>
+                <form method="POST" action="{{ route('movies.store') }}" class="needs-validation" novalidate>
                     @csrf
                     @include('movies._form', ['movie' => $movie, 'formType' => 'create'])
                 </form>

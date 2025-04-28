@@ -736,6 +736,8 @@ Index Of Script
     /*---------------Form Validation--------------------*/
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     window.addEventListener('load', loadFormValidation, false);
+
+    initImageFallback()
 })();
 
 function loadFormValidation() {
@@ -771,6 +773,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add event listener for checkbox toggle
     checkbox.addEventListener("change", updatePrices);
+
 });
 
 // document.getElementById('')
@@ -787,4 +790,19 @@ function reloadScript(src) {
     script.async = true;
 
     document.body.appendChild(script);
+}
+
+function initImageFallback() {
+    const fallback = '../images/avatars/no-image-fallback.png'; // ảnh dự phòng
+    console.log(fallback)
+    document.querySelectorAll('img').forEach(img => {
+        img.onerror = () => {
+            if (img.src !== fallback) img.src = fallback;
+        };
+
+        // Nếu ảnh đã lỗi từ trước
+        if (img.complete && img.naturalWidth === 0) {
+            img.onerror();
+        }
+    });
 }

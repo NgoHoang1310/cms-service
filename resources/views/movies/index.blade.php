@@ -1,5 +1,7 @@
 @php
+    use App\Helpers\CUtils;
     /* @var $movie app\models\Movie */
+
 @endphp
 
 @extends('layouts.app')
@@ -22,7 +24,7 @@
                                 <tr class="text-uppercase">
                                     <th>Phim</th>
                                     <th>Chất lượng</th>
-                                    <th>Danh mục</th>
+                                    <th>Đạo diễn</th>
                                     <th>Ngày phát hành</th>
                                     <th>Thời lượng</th>
                                     <th>Tình trạng phim</th>
@@ -35,11 +37,10 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex">
-                                                <img src="{{ $movie->poster_url }}" loading="lazy" alt="image"
+                                                <img src="{{ \App\Facades\Firebase::getPublicFileUrl($movie->poster_url) }}" loading="lazy" alt="image"
                                                      class="rounded-2 avatar avatar-55 img-fluid"/>
                                                 <div class="d-flex flex-column ms-3 justify-content-center">
                                                     <h6 class="text-capitalize">{{ $movie->title }}</h6>
-                                                    <small>{{ $movie->duration }}</small>
                                                 </div>
                                             </div>
                                         </td>
@@ -47,17 +48,17 @@
                                             <small>480/720/1080</small>
                                         </td>
                                         <td>
-                                            {{ $movie->release }}
+                                            {{ $movie->directors }}
                                         </td>
                                         <td>
-                                            <small>{{ $movie->release }}</small>
+                                            <small>{{ CUtils::format_date($movie->release) }}</small>
                                         </td>
                                         <td>{{ $movie->duration }}</td>
                                         <td>!!!</td>
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <div class="form-check form-switch ms-2">
-                                                    <input class="form-check-input" type="checkbox"/>
+                                                    <input {{ $movie->status ? 'checked' : '' }} class="form-check-input" type="checkbox"/>
                                                 </div>
                                             </div>
                                         </td>

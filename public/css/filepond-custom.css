@@ -1,0 +1,22 @@
+/* === Common === */
+.filepond--root {
+    margin-bottom: 1.5rem;
+}
+
+/* === POSTER: 2:3 (chiều cao lớn hơn) === */
+.poster-pond .filepond--root {
+    max-width: 300px;
+}
+
+.poster-pond .filepond--item {
+    max-height: 450px;
+}
+
+/* === BACKDROP: 16:9 (chiều ngang rộng hơn) === */
+.backdrop-pond .filepond--root {
+    max-width: 600px;
+}
+
+.backdrop-pond .filepond--item {
+    max-height: 340px;
+}

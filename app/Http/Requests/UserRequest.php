@@ -27,7 +27,6 @@ class UserRequest extends FormRequest
             'phone_number' => 'numeric|digits:10',
             'password' => 'string|min:6',
             'birthday' => 'date',
-            'avatar_link' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 
@@ -44,9 +43,6 @@ class UserRequest extends FormRequest
             'password.string' => 'Mật khẩu phải là chuỗi.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'birthday.date' => 'Ngày sinh phải đúng định dạng ngày.',
-            'avatar_link.image' => 'File tải lên phải là hình ảnh.',
-            'avatar_link.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif.',
-            'avatar_link.max' => 'Kích thước ảnh tối đa là 2MB.',
         ];
     }
 

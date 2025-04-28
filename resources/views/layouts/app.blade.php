@@ -18,6 +18,22 @@
     <meta name="DC.title" content="Streamit Responsive Bootstrap 5 Admin Dashboard Template">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Filepond plugin CDN -->
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+    <link href="https://unpkg.com/@pqina/pintura/pintura.css" rel="stylesheet">
+    <link href="https://unpkg.com/@pqina/filepond-plugin-image-editor/dist/filepond-plugin-image-editor.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/pintura/pintura.js"></script>
+    <script src="https://unpkg.com/@pqina/pintura/pintura-filepond.js"></script>
+    <script src="https://unpkg.com/@pqina/filepond-plugin-image-editor/dist/filepond-plugin-image-editor.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css') }}"
@@ -34,9 +50,9 @@
     <!-- Flatpickr css -->
     <link rel="stylesheet" href="{{ asset("vendor/flatpickr/dist/flatpickr.min.css") }}">
 
-
-
-
+    <!-- Filepond css -->
+    <link rel="stylesheet" href="{{ asset("vendor/filepond/dist/filepond.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/filepond-custom.css") }}">
 
 
 
@@ -55,7 +71,6 @@
     <link rel="stylesheet" href="{{ asset("css/customizer.min848f.css?v=5.2.1") }}">
 
     <link rel="stylesheet" href="{{ asset("vendor/swiperSlider/swiper-bundle.min.css") }}">
-
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -534,7 +549,10 @@
     <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" async></script>
     <script src="{{ asset('js/plugins/sweet-alert.js') }}" defer></script>
 
-
+    <!--Filepond Script -->
+    <script src="{{ asset('vendor/filepond/dist/filepond.js') }}" async></script>
+    <script src="{{ asset('vendor/filepond/dist/filepond.esm.js') }}" async></script>
+    <script src="{{ asset('js/plugins/filepond.js') }}" defer></script>
 
 
     <script src="{{ asset('vendor/swiperSlider/swiper-bundle.min.js') }}"></script>

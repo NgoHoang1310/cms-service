@@ -171,6 +171,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\FirebaseServiceProvider::class,
+        App\Providers\RabbitMQServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -185,7 +186,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+         'Firebase' => App\Facades\Firebase::class,
     ])->toArray(),
 
 ];

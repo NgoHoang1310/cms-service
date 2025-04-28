@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\FirebaseService;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use Kreait\Firebase\Factory;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class FirebaseServiceProvider extends ServiceProvider
 {
@@ -12,18 +14,11 @@ class FirebaseServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('firebase.auth', function ($app) {
-            $factory = (new Factory)
-                ->withServiceAccount(storage_path('app/firebase/firebaseCredential.json'));
-
-            return $factory->createAuth();
-        });
-
-        $this->app->singleton('firebase.storage', function ($app) {
-            $factory = (new Factory)
-                ->withServiceAccount(storage_path('app/firebase/firebaseCredential.json'));
-
-            return $factory->createStorage();
+        $this->app->singleton(FirebaseService::class, function ($app) {
+            $auth = Firebase::auth();
+            $storage = Firebase::storage();
+            $bucket = $storage->getBucket(config('firebase.storage.default_bucket'));
+            return new FirebaseService($auth, $storage, $bucket);
         });
     }
 

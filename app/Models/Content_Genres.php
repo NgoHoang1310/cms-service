@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\BaseTrait as Base;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * Class Content_Genres
@@ -17,7 +17,10 @@ use App\Traits\BaseTrait as Base;
  * @property string|null $created_at
  * @property string|null $updated_at
  */
-class Content_Genres extends Model
+class Content_Genres extends Pivot
 {
     use HasFactory, Base;
+    public $timestamps = true;
+    protected $table = 'content_genres';
+    protected $fillable = ['target_id', 'genre_id', 'target_type'];
 }

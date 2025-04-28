@@ -3,6 +3,9 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GenresController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\ProxyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,4 +47,26 @@ Route::resource('movies', MovieController::class);
 
 //Category Routes
 Route::resource('categories', CategoryController::class);
+
+//Genres Routes
+Route::resource('genres', GenresController::class);
+
+Route::get('/proxy-image', function (\App\Services\FirebaseService $firebaseService) {
+    $url = request('url');
+
+    if (!$url) {
+        return response('Missing URL', 400);
+    }
+
+   return $firebaseService->getPublicFileUrl($url);
+});
+
+// File Upload Routes
+Route::post('/upload', [FileController::class, 'upload']);
+Route::post('/upload/temp', [FileController::class, 'uploadTemp']);
+Route::delete('/upload/revert', [FileController::class, 'delete']);
+Route::delete('/upload/temp/revert', [FileController::class, 'deleteTemp']);
+
+// Proxy Routes
+Route::get('/proxy', [ProxyController::class, 'fetch']);
 

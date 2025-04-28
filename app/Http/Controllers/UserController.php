@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\services\FirebaseService;
+use App\Services\FirebaseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,40 +27,35 @@ class UserController extends Controller
     public function create()
     {
         $user = new User();
-        if (request()->ajax()) {
-            return response()->json([
-                'html' => view('users.create', compact('user'))->render()
-            ]);
-        }
-
-        return view('users.create');
+        return view('users.create', compact('user'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequest $request, FirebaseService $firebaseService)
-    {
-        try {
-            // Khởi tạo data từ request
-            $data = $request->only(['user_name', 'email', 'password', 'role', 'phone_number', 'birthday']);
-            $firebaseData = $request->only(['user_name', 'email', 'password']);
+        public function store(UserRequest $request, FirebaseService $firebaseService)
+        {
+            try {
+                // Khởi tạo data từ request
+                $data = $request->only(['user_name', 'email', 'password', 'role', 'phone_number', 'birthday', 'avatar_link']);
+                $firebaseData = $request->only(['user_name', 'email', 'password', 'avatar_link']);
 
-            // Cập nhật Firebase
-            $user = $firebaseService->createUser($firebaseData);
-            if(!$user) {
-                return redirect()->back()->with('error', 'Tạo tài khoản thất bại. Vui lòng thử lại sau.');
+                // Cập nhật Firebase
+                $user = $firebaseService->createUser($firebaseData);
+                if(!$user) {
+                    return redirect()->back()->with('error', 'Tạo tài khoản thất bại. Vui lòng thử lại sau.');
+                }
+                $data['uuid'] = $user->uid;
+                $data['provider'] = $user->providerData[0]->providerId;
+                $model = new User();
+                $model->fill($data);
+                $model->save();
+
+                return redirect()->route('users.index')->with('success', 'Tạo tài khoản thành công');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Tạo tài khoản thất bại: ' . $e->getMessage());
             }
-            $data['uuid'] = $user->uid;
-            $data['provider'] = $user->providerData[0]->providerId;
-
-            User::query()->insert($data);
-
-            return redirect()->route('users.index')->with('success', 'Tạo tài khoản thành công');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Tạo tài khoản thất bại: ' . $e->getMessage());
         }
-    }
 
     /**
      * Display the specified resource.
@@ -75,12 +70,6 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (request()->ajax()) {
-            return response()->json([
-                'html' => view('users.edit', compact('user'))->render()
-            ]);
-        }
-
         return view('users.edit', compact('user'));
     }
 
@@ -91,17 +80,8 @@ class UserController extends Controller
     {
         try {
             // Khởi tạo data từ request
-            $data = $request->only(['user_name', 'email', 'password', 'phone_number', 'birthday', 'role', 'status']);
-            $firebaseData = $request->only(['user_name', 'email', 'password']);
-
-            // Xử lý avatar nếu có
-            if ($request->hasFile('avatar_link')) {
-                $avatarFile = $request->file('avatar_link');
-                $firebaseService->deleteFileFromFirebase($user->avatar_link);
-                $avatarUrl = $firebaseService->uploadFileToFirebase($avatarFile, 'avatars/' . $user->uuid);
-                $data['avatar_link'] = $avatarUrl['path'];
-                $firebaseData['avatar_link'] = $avatarUrl['url'];
-            }
+            $data = $request->only(['user_name', 'email', 'password', 'phone_number', 'birthday', 'role', 'status', 'avatar_link']);
+            $firebaseData = $request->only(['user_name', 'email', 'password', 'avatar_link']);
 
             // Cập nhật Firebase
             if(!$firebaseService->updateUserProfile($user->uuid, $firebaseData)) {

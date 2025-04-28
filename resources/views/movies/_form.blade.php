@@ -1,8 +1,11 @@
 @php
 use App\Models\Category;
+use App\Models\Genres;
+use App\Facades\Firebase;
 /* @var $movie app\models\Movie */
 
 $categories = Category::all();
+$genres = Genres::all();
 @endphp
 
 <div class="section-form">
@@ -29,7 +32,7 @@ $categories = Category::all();
                     </label>
 
                     <!-- textarea input -->
-                    <textarea id="description" class="form-control"
+                    <textarea id="description" name="description" class="form-control"
                               placeholder="Mô tả"></textarea>
                 </div>
             </div>
@@ -51,7 +54,7 @@ $categories = Category::all();
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    <input id="duration" type="text" class="form-control "
+                    <input id="duration" name="duration" type="text" class="form-control "
                            placeholder="Thời lượng" value="" min="" multiple="" required/>
                 </div>
             </div>
@@ -64,7 +67,7 @@ $categories = Category::all();
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    <input id="directors" type="text" class="form-control "
+                    <input id="directors" name="directors" type="text" class="form-control "
                            placeholder="Đạo diễn" value="" min="" multiple=""/>
                 </div>
             </div>
@@ -77,7 +80,7 @@ $categories = Category::all();
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    <input id="actors" type="text" class="form-control "
+                    <input id="actors" name="actors" type="text" class="form-control "
                            placeholder="Diễn viên" value="" min="" multiple=""/>
                 </div>
             </div>
@@ -86,7 +89,7 @@ $categories = Category::all();
                     <label class="form-label flex-grow-1"
                            for="category"><strong>Danh mục phim:</strong></label>
                     <select id="category" type="select"
-                            name="category[]"
+                            name="categories[]"
                             multiple
                             class="form-control select2-basic-multiple"
                             placeholder="Chọn danh mục">
@@ -105,11 +108,9 @@ $categories = Category::all();
                             multiple
                             class="form-control select2-basic-multiple"
                             placeholder="Chọn thể loại">
-                        <option>Action</option>
-                        <option>Adventure</option>
-                        <option>Animation</option>
-                        <option>Horror</option>
-                        <option>Thriller</option>
+                        @foreach($genres as $genre)
+                            <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -118,17 +119,20 @@ $categories = Category::all();
     <fieldset>
         <legend>Tệp đa phương tiện</legend>
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="form-group px-3 ">
-                    <label class="form-label flex-grow-1" for="Thumbnail">
-                        <strong>Thumbnail</strong>:
+                    <label class="form-label flex-grow-1" for="backdrop_url">
+                        <strong>Ảnh nền</strong>:
                     </label>
 
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    <input id="Thumbnail" type="file" class="form-control " placeholder=""
-                           value="" min="" multiple=""/>
+                    <input id="backdrop_url" type="file" name="file" class="filepond" placeholder=""
+                           accept="image/png, image/jpeg, image/gif"
+                           data-url="{{ Firebase::getPublicFileUrl($movie->backdrop_url) }}" data-path="{{ $movie->poster_url }}"
+                    />
+                    <input type="hidden" name="backdrop_url" />
                 </div>
             </div>
             <div class="col-sm-6">
@@ -140,242 +144,40 @@ $categories = Category::all();
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    <input id="Poster" type="file" class="form-control " placeholder=""
-                           value="" min="" multiple=""/>
+                    <input id="poster_url" type="file" name="file" class="filepond" placeholder=""
+                           value="" accept="image/png, image/jpeg, image/gif"/>
+                    <input type="hidden" name="poster_url" />
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="form-group px-3 ">
-                    <label class="form-label flex-grow-1" for="Trailer Url">
+                    <label class="form-label flex-grow-1" for="trailer_url">
                         <strong>Trailer Url</strong>:
                     </label>
 
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    <input id="Trailer Url" type="text" class="form-control "
+                    <input id="trailer_url" name="trailer_url" type="text" class="form-control"
                            placeholder="Trailer Link" value="" min="" multiple=""/>
                 </div>
             </div>
-        </div>
-        <div class="d-flex justify-content-between align-items-center my-4 px-3">
-            <h5 class="mb-0">
-                <strong>Video Quality</strong>
-            </h5>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#video-modal">
-                <i class="fa-solid fa-square-plus me-2"></i>Add Video
-            </button>
+            <div class="col-sm-6">
+                <div class="form-group px-3 ">
+                    <label class="form-label flex-grow-1" for="video">
+                        <strong>Video</strong>:
+                    </label>
 
-            <div class="modal fade" id="video-modal" tabindex="-1" role="dialog"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="video-modal-label">Add Video</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="#" class="section-form">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-group px-3 d-flex flex-column">
-                                            <label class="form-label flex-grow-1"
-                                                   for="quality"><strong>Quality:</strong></label>
-                                            <select id="quality" type="select"
-                                                    class="form-control select2-basic-multiple"
-                                                    placeholder="Select Quality">
-                                                <option>480p</option>
-                                                <option>720p</option>
-                                                <option>1080p</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="form-group px-3 ">
-                                            <label class="form-label flex-grow-1"
-                                                   for="Video">
-                                                <strong>Video</strong> :
-                                            </label>
-
-                                            <!-- textarea input -->
-                                            <!-- toggle switch -->
-                                            <!-- common inputs -->
-                                            <input id="Video" type="file"
-                                                   class="form-control " placeholder=""
-                                                   value="" min="" multiple=""/>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div
-                                            class="form-group px-3 d-flex justify-content-between">
-                                            <label class="form-label flex-grow-1"
-                                                   for="Download Link">
-                                                <strong>Download Link</strong> :
-                                            </label>
-
-                                            <!-- textarea input -->
-                                            <!-- toggle switch -->
-                                            <div class="form-check form-switch ms-2">
-                                                <input id="Download Link"
-                                                       class="form-check-input"
-                                                       type="checkbox"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close
-                            </button>
-                            <button type="button" class="btn btn-primary">Save
-                                changes
-                            </button>
-                        </div>
-                    </div>
+                    <!-- textarea input -->
+                    <!-- toggle switch -->
+                    <!-- common inputs -->
+                    <input id="video" type="file" name="file" class="filepond" placeholder=""
+                           value="" accept="video/mp4"/>
+                    <input type="hidden" name="temp_path" />
                 </div>
             </div>
         </div>
-        <div class="row px-3">
-            <div class="col-sm-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                        <tr class="text-center">
-                            <th>Quality</th>
-                            <th>Video URL</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-center">
-                            <td>720P</td>
-                            <td>video_720.mp4</td>
-                            <td>
-                                <div
-                                    class="d-flex align-items-center justify-content-center">
-                                    <a aria-current="page" href="#"
-                                       class="active text-success" title="Edit">
-                                        <i class="fa-solid fa-pen mx-4"></i>
-                                    </a>
-                                    <a aria-current="page" href="#"
-                                       class="active text-danger" title="Delete">
-                                        <i class="fa-solid fa-trash me-4"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between align-items-center my-4 px-3">
-            <h5 class="mb-0">
-                <strong>Subtitles</strong>
-            </h5>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#subtitle-modal">
-                <i class="fa-solid fa-square-plus me-2"></i>Add Subtitle
-            </button>
 
-            <div class="modal fade" id="subtitle-modal" tabindex="-1" role="dialog"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="subtitle-modal-label">Add Subtitle
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="#" class="section-form">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-group px-3 d-flex flex-column">
-                                            <label class="form-label flex-grow-1"
-                                                   for="subtitle-language"><strong>Subtitle:</strong></label>
-                                            <select id="subtitle-language" type="select"
-                                                    class="form-control select2-basic-multiple"
-                                                    placeholder="select subtitle">
-                                                <option>Hindi</option>
-                                                <option>English</option>
-                                                <option>French</option>
-                                                <option>Marathi</option>
-                                                <option>Gujrati</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="form-group px-3 ">
-                                            <label class="form-label flex-grow-1"
-                                                   for="File">
-                                                <strong>File</strong> :
-                                            </label>
-
-                                            <!-- textarea input -->
-                                            <!-- toggle switch -->
-                                            <!-- common inputs -->
-                                            <input id="File" type="file"
-                                                   class="form-control " placeholder=""
-                                                   value="" min="" multiple=""/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close
-                            </button>
-                            <button type="button" class="btn btn-primary">Save
-                                changes
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row px-3">
-            <div class="col-sm-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                        <tr class="text-center">
-                            <th>Language</th>
-                            <th>URL</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-center">
-                            <td>English</td>
-                            <td>English.txt</td>
-                            <td>
-                                <div
-                                    class="d-flex align-items-center justify-content-center">
-                                    <a aria-current="page" href="#"
-                                       class="active text-success" title="Edit">
-                                        <i class="fa-solid fa-pen mx-4"></i>
-                                    </a>
-                                    <a aria-current="page" href="#"
-                                       class="active text-danger" title="Delete">
-                                        <i class="fa-solid fa-trash me-4"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </fieldset>
     <div class="d-grid d-flex gap-3 p-3">
         <button type="submit" class="btn btn-primary d-block">
