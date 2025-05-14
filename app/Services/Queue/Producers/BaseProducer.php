@@ -7,8 +7,8 @@ use App\Services\Queue\QueueService;
 
 abstract class BaseProducer
 {
-    protected $queueService;
-    protected $routingKey;
+    protected QueueService $queueService;
+    protected string $routingKey;
 
     public function __construct(QueueService $queueService)
     {

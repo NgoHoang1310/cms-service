@@ -28,12 +28,12 @@ class MovieRequest extends FormRequest
             'duration' => 'required|integer',
             'actors' => 'nullable|string',
             'directors' => 'nullable|string',
+            'country' => 'nullable|string',
             'poster_url' => 'nullable|string',
             'trailer_url' => 'nullable|string',
             'backdrop_url' => 'nullable|string',
             'rating' => 'nullable|numeric|min:0|max:5',
             'is_hot' => 'nullable|integer,0,1',
-//            'categories.*' => 'exists:categories,id'
         ];
     }
 

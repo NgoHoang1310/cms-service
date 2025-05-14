@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\FirebaseService;
+use App\Services\Queue\Producers\VideoProducer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -10,10 +11,12 @@ use Illuminate\Support\Str;
 class FileController extends Controller
 {
     protected FirebaseService $firebaseService;
+    protected VideoProducer $videoProducer;
 
-    public function __construct(FirebaseService $firebaseService)
+    public function __construct(FirebaseService $firebaseService, VideoProducer $videoProducer)
     {
         $this->firebaseService = $firebaseService;
+        $this->videoProducer = $videoProducer;
     }
 
     public function upload(Request $request)
@@ -51,7 +54,7 @@ class FileController extends Controller
 
             return response()->json([
                 'message' => 'Upload thành công',
-                'temp_path' => $tempPath,
+                'temp_path' => $tempPath . '/' . $fileName,
                 'file_name' => $fileName,
             ], 200);
         }catch (\Exception $e) {
@@ -106,6 +109,21 @@ class FileController extends Controller
             return response()->json([
                 'error' => 'Xóa file thất bại: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function deleteVideoS3(Request $request)
+    {
+        try {
+            $content = json_decode($request->getContent(), true);
+            $this->videoProducer->processVideo([
+                'id' => $content['id'],
+                'uuid' => $content['uuid'],
+                'content_type' => $content['content_type'],
+            ], VideoProducer::PROCESSING_TYPE_REVERT);
+            return response()->json(['message' => 'Xóa video thành công'], 200);
+        }catch (\Exception $e) {
+            return response()->json(['error' => 'Xóa video thất bại: ' . $e->getMessage()], 500);
         }
     }
 }

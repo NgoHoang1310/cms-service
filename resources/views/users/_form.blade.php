@@ -1,6 +1,8 @@
 @php
-use App\Facades\Firebase;
-/* @var $user app\models\User */
+    use App\Facades\Firebase;
+    /* @var $user app\models\User */
+    /* @var $formType string */
+
 @endphp
 
 <div class="section-form">
@@ -17,7 +19,7 @@ use App\Facades\Firebase;
                     <!-- toggle switch -->
                     <!-- common inputs -->
                     <input id="user_name" name="user_name" type="text" class="form-control "
-                        placeholder="Tên đăng nhập" value="{{ $user->user_name }}" min="" multiple="" required />
+                           placeholder="Tên đăng nhập" value="{{ $user->user_name }}" min="" multiple="" {{ $formType === 'show' ? 'disabled' : '' }} required/>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -30,9 +32,9 @@ use App\Facades\Firebase;
                     <!-- toggle switch -->
                     <!-- common inputs -->
                     <input {{ (!$user->isEditable() && $formType == 'edit') ? 'disabled' : '' }} id="email" name="email"
-                        type="email"
-                        class="form-control "
-                        placeholder="Enter email" value="{{ $user->email }}" min="" multiple="" required />
+                           type="email"
+                           class="form-control "
+                           placeholder="Enter email" value="{{ $user->email }}" min="" multiple="" {{ $formType === 'show' ? 'disabled' : '' }} required/>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -45,9 +47,9 @@ use App\Facades\Firebase;
                     <!-- toggle switch -->
                     <!-- common inputs -->
                     <input {{ (!$user->isEditable() && $formType == 'edit') ? 'disabled' : '' }} id="password"
-                        name="password" type="password"
-                        class="form-control "
-                        placeholder="Mật khẩu" value="{{ $user->password }}" max="10" multiple="" required />
+                           name="password" type="password"
+                           class="form-control "
+                           placeholder="Mật khẩu" value="{{ $user->password }}" max="10" multiple="" {{ $formType === 'show' ? 'disabled' : '' }} required/>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -60,25 +62,26 @@ use App\Facades\Firebase;
                     <!-- toggle switch -->
                     <!-- common inputs -->
                     <input id="phone" name="phone_number" type="text" class="form-control "
-                        placeholder="Số điện thoại" value="{{ $user->phone_number }}" min="" multiple="" />
+                           placeholder="Số điện thoại" value="{{ $user->phone_number }}" min="" multiple="" {{ $formType === 'show' ? 'disabled' : '' }}/>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group px-3">
                     <label class="form-label flex-grow-1" for="birthday"><strong>Ngày sinh:</strong></label>
                     <input name="birthday" class="form-control flatpickr_humandate" type="text"
-                        value="{{ $user->birthday }}"
-                        placeholder="Ngày sinh" data-id="multiple" readonly="readonly">
+                           value="{{ $user->birthday }}"
+                           placeholder="Ngày sinh" data-id="multiple" readonly="readonly" {{ $formType === 'show' ? 'disabled' : '' }}>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group px-3">
                     <label class="form-label flex-grow-1"
-                        for="role"><strong>Quyền:</strong></label>
+                           for="role"><strong>Quyền:</strong></label>
                     <select id="role" type="select"
-                        name="role"
-                        class="form-control select2-basic-multiple"
-                        placeholder="select role">
+                            name="role"
+                            class="form-control select2-basic-multiple"
+                            {{ $formType === 'show' ? 'disabled' : '' }}
+                            placeholder="select role">
                         <option
                             value="{{ \App\Models\User::ROLE_USER }}" {{ $user->role == \App\Models\User::ROLE_USER ? 'selected' : '' }}>
                             User
@@ -91,21 +94,22 @@ use App\Facades\Firebase;
                 </div>
             </div>
             @if($formType == 'edit')
-            <div class="col-sm-6">
-                <div class="form-group px-3">
-                    <label class="form-label flex-grow-1"
-                        for="status"><strong>Trạng thái:</strong></label>
-                    <select id="status" type="select"
-                        name="status"
-                        class="form-control select2-basic-multiple">
-                        @foreach(\App\Models\User::$arrStatus as $key => $status)
-                        <option value="{{ $key }}" {{ $user->status == $key ? 'selected' : '' }}>
-                            {{ $status }}
-                        </option>
-                        @endforeach
-                    </select>
+                <div class="col-sm-6">
+                    <div class="form-group px-3">
+                        <label class="form-label flex-grow-1"
+                               for="status"><strong>Trạng thái:</strong></label>
+                        <select id="status" type="select"
+                                name="status"
+                                {{ $formType === 'show' ? 'disabled' : '' }}
+                                class="form-control select2-basic-multiple">
+                            @foreach(\App\Models\User::$arrStatus as $key => $status)
+                                <option value="{{ $key }}" {{ $user->status == $key ? 'selected' : '' }}>
+                                    {{ $status }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </div>
             @endif
             <div class="col-sm-6">
                 <div class="row">
@@ -118,9 +122,17 @@ use App\Facades\Firebase;
                             <!-- textarea input -->
                             <!-- toggle switch -->
                             <!-- common inputs -->
-                            <input width="150px" height="150px" id="avatar_link" name="file" type="file" class="filepond" placeholder=""
-                                data-url="{{ Firebase::getPublicFileUrl($user->avatar_link) }}" data-path="{{ $user->avatar_link }}" accept="image/png, image/jpeg, image/gif" />
-                            <input type="hidden" name="avatar_link" />
+                            @if($formType !== 'show' || !empty(Firebase::getPublicFileUrl($user->avatar_link)))
+                            <input width="150px" height="150px" id="avatar_link" name="file" type="file"
+                                   class="filepond" placeholder=""
+                                   data-url="{{ Firebase::getPublicFileUrl($user->avatar_link) }}"
+                                   data-path="{{ $user->avatar_link }}" accept="image/png, image/jpeg, image/gif"/>
+                            <input type="hidden" name="avatar_link"/>
+                            @endif
+                            @if($formType === 'show' && empty(Firebase::getPublicFileUrl($user->avatar_link)))
+                                <br>
+                                <img class="avatar-rounded" src="{{ asset('images/no-image-poster.png') }}">
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -128,11 +140,17 @@ use App\Facades\Firebase;
         </div>
     </fieldset>
     <div class="d-grid d-flex gap-3 p-3">
-        <button type="submit" class="btn btn-primary d-block">
-            <i class="fa-solid fa-floppy-disk me-2"></i>Lưu
-        </button>
-        <a class="btn btn-outline-primary d-block" href="{{ route('users.index') }}" aria-label="Close">
-            <i class="fa-solid fa-angles-left me-2"></i>Hủy
-        </a>
+        @if($formType !== 'show')
+            <button type="submit" class="btn btn-primary d-block">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Lưu
+            </button>
+            <a class="btn btn-outline-primary d-block" href="{{ route('users.index') }}" aria-label="Close">
+                <i class="fa-solid fa-angles-left me-2"></i>Hủy
+            </a>
+        @else
+            <a class="btn btn-outline-primary d-block" href="{{ route('users.index') }}" aria-label="Close">
+                <i class="fa-solid fa-angles-left me-2"></i>Quay lại
+            </a>
+        @endif
     </div>
 </div>

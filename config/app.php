@@ -172,6 +172,7 @@ return [
         App\Providers\ViewServiceProvider::class,
         App\Providers\FirebaseServiceProvider::class,
         App\Providers\RabbitMQServiceProvider::class,
+        Reliese\Coders\CodersServiceProvider::class,
     ])->toArray(),
 
     /*

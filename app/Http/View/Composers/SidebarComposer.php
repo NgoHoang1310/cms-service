@@ -31,15 +31,25 @@ class SidebarComposer
                 'children' => [
                     [
                         'title' => 'Danh sách phim',
-                        'link' => 'tv-shows/show-list.html',
+                        'link' => '/series',
+                        'match' => ['series', 'series/create', 'series/[0-9]+/edit'],
                     ],
                     [
                         'title' => 'Mùa phim',
-                        'link' => 'tv-shows/season.html',
+                        'link' => '/series/seasons',
+                        'match' => [
+                            'series/seasons',
+                            'series/[0-9]+/seasons.*',
+                        ],
                     ],
                     [
                         'title' => 'Tập phim',
-                        'link' => 'tv-shows/episodes.html',
+                        'link' => '/series/episodes',
+                        'match' => [
+                            'series/episodes',
+                            'series/[0-9]+/episodes.*',
+                            'series/[0-9]+/seasons/[0-9]+/episodes.*',
+                        ],
                     ]
                 ]
             ],
@@ -60,7 +70,19 @@ class SidebarComposer
                 $item['active'] = Str::startsWith($currentPath, ltrim($item['link'], '/'));
             } elseif (isset($item['children'])) {
                 foreach ($item['children'] as &$child) {
-                    $child['active'] = Str::startsWith($currentPath, ltrim($child['link'], '/'));
+                    $child['active'] = false;
+
+                    // Nếu có field `match`, dùng regex để kiểm tra
+                    if (isset($child['match'])) {
+                        foreach ($child['match'] as $pattern) {
+                            if (preg_match('#^' . $pattern . '$#', $currentPath)) {
+                                $child['active'] = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        $child['active'] = Str::startsWith($currentPath, ltrim($child['link'], '/'));
+                    }
                 }
 
                 // Đánh dấu active cho cha nếu 1 trong các con đang active

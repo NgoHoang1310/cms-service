@@ -23,16 +23,8 @@
     <link href="https://unpkg.com/@pqina/pintura/pintura.css" rel="stylesheet">
     <link href="https://unpkg.com/@pqina/filepond-plugin-image-editor/dist/filepond-plugin-image-editor.css" rel="stylesheet">
 
-    <script src="https://unpkg.com/pintura/pintura.js"></script>
-    <script src="https://unpkg.com/@pqina/pintura/pintura-filepond.js"></script>
-    <script src="https://unpkg.com/@pqina/filepond-plugin-image-editor/dist/filepond-plugin-image-editor.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <!-- Video.js plugin CDN-->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
@@ -80,6 +72,9 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset("vendor/select2/dist/css/select2.min.css") }}">
+
+    <!-- Custom CSS -->
+    @stack('styles')
 </head>
 
 <body class="  ">
@@ -522,6 +517,21 @@
         </svg>
     </a> <!-- Live Customizer end -->
 
+    <!-- Filepond plugin CDN -->
+    <script src="https://unpkg.com/pintura/pintura.js"></script>
+    <script src="https://unpkg.com/@pqina/pintura/pintura-filepond.js"></script>
+    <script src="https://unpkg.com/@pqina/filepond-plugin-image-editor/dist/filepond-plugin-image-editor.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+
+    <!-- Video.js plugin CDN -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
     <!-- Library Bundle Script -->
     <script src="{{ asset('js/core/libs.min.js') }}"></script>
     <!-- Plugin Scripts -->
@@ -605,9 +615,8 @@
             @endif
         });
     </script>
+
+    <!-- Custom Script -->
+    @stack('scripts')
 </body>
-
-
-<!-- Mirrored from templates.iqonic.design/streamit-dist/dashboard/html/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 Apr 2025 08:34:37 GMT -->
-
 </html>

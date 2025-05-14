@@ -5,12 +5,14 @@ namespace App\Services\Queue\Producers;
 
 class VideoProducer extends BaseProducer
 {
-    protected $routingKey = 'video.processing';
+    protected string $routingKey = 'video.processing';
+    const PROCESSING_TYPE_UPLOAD = 'video.processing.upload';
+    const PROCESSING_TYPE_REVERT = 'video.processing.revert';
 
-    public function processVideo(array $videoData)
+    public function processVideo(array $videoData, string $type = self::PROCESSING_TYPE_UPLOAD)
     {
         return $this->publish([
-            'type' => 'video.processing',
+            'type' => $type,
             'data' => $videoData,
             'timestamp' => now()->timestamp
         ]);

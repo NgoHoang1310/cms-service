@@ -37,8 +37,10 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex">
-                                                <img src="{{ \App\Facades\Firebase::getPublicFileUrl($movie->poster_url) }}" loading="lazy" alt="image"
-                                                     class="rounded-2 avatar avatar-55 img-fluid"/>
+                                                <img
+                                                    src="{{ \App\Facades\Firebase::getPublicFileUrl($movie->poster_url) }}"
+                                                    loading="lazy" alt="image"
+                                                    class="rounded-2 avatar avatar-55 img-fluid"/>
                                                 <div class="d-flex flex-column ms-3 justify-content-center">
                                                     <h6 class="text-capitalize">{{ $movie->title }}</h6>
                                                 </div>
@@ -53,26 +55,37 @@
                                         <td>
                                             <small>{{ CUtils::format_date($movie->release) }}</small>
                                         </td>
-                                        <td>{{ $movie->duration }}</td>
-                                        <td>!!!</td>
+                                        <td>{{ $movie->duration }} phút</td>
+                                        <td><span
+                                                class="badge {{ $movie->getStatusLabelAttribute() }}">{{ $movie->getStatusTextAttribute() }}</span>
+                                        </td>
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <div class="form-check form-switch ms-2">
-                                                    <input {{ $movie->status ? 'checked' : '' }} class="form-check-input" type="checkbox"/>
+                                                    <input
+                                                        {{ $movie->status ? 'checked' : '' }} class="form-check-input"
+                                                        type="checkbox"
+                                                        data-movie-id="{{ $movie->id }}"
+                                                    />
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center list-user-action">
-                                                <a class="btn btn-sm btn-icon btn-success rounded"
+                                                <a class="btn btn-sm btn-icon btn-outline-success rounded"
+                                                   href="{{ route('movies.show', $movie) }}"
+                                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Xem">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-icon btn-outline-warning rounded"
                                                    href="{{ route('movies.edit', $movie) }}"
                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </a>
-                                                <a class="btn btn-sm btn-icon btn-danger delete-btn rounded"
+                                                <a class="btn btn-sm btn-icon btn-outline-danger delete-btn rounded"
                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Xoá"
                                                    data-url="{{ route('movies.destroy', $movie) }}"
-                                                   >
+                                                >
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
                                             </div>
@@ -88,3 +101,23 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        // Lắng nghe sự kiện thay đổi của checkbox
+        $('.form-check-input').on('change', function () {
+            var movieId = $(this).data('movie-id');  // Lấy movie ID từ data attribute
+            var status = $(this).prop('checked') ? 1 : 0;  // Kiểm tra trạng thái checkbox (checked or not)
+
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                url: '/movies/' + movieId + '/update-status',  // URL tới route bạn đã định nghĩa
+                method: 'POST',  // Phương thức HTTP
+                data: {
+                    _token: '{{ csrf_token() }}',  // CSRF token (bắt buộc trong Laravel)
+                    status: status  // Gửi status mới
+                },
+            });
+        });
+    </script>
+@endpush

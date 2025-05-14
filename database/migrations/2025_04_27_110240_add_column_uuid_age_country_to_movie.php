@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('movie', function (Blueprint $table) {
            $table->string('uuid')->after('id')->unique()->nullable();
-              $table->integer('age')->after('uuid')->nullable();
+           $table->string('age')->after('uuid')->nullable();
         });
     }
 

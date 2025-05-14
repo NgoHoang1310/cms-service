@@ -52,17 +52,21 @@ use App\Facades\Firebase;
                                     <td>{{ CUtils::format_unix_timestamp($user->last_login) }}</td>
                                     <td>
                                         <div class="flex align-items-center list-user-action">
-                                            <a class="btn btn-sm btn-icon btn-success rounded"
-                                                href="{{ route('users.edit', $user) }}"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
+                                            <a class="btn btn-sm btn-icon btn-outline-success rounded"
+                                               href="{{ route('users.show', $user) }}"
+                                               data-bs-toggle="tooltip" data-bs-placement="top" title="Xem">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-icon btn-outline-warning rounded"
+                                               href="{{ route('users.edit', $user) }}"
+                                               data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-icon btn-danger rounded delete-btn"
-                                                data-bs-original-title="Xóa"
-                                                data-url="{{ route('users.destroy', $user) }}">
-                                                <span class="btn-inner">
-                                                    <i class="fa-solid fa-trash fa-xs"></i>
-                                                </span>
+                                            <a class="btn btn-sm btn-icon btn-outline-danger delete-btn rounded"
+                                               data-bs-toggle="tooltip" data-bs-placement="top" title="Xoá"
+                                               data-url="{{ route('users.destroy', $user) }}"
+                                            >
+                                                <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </div>
                                     </td>
