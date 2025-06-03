@@ -22,7 +22,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamp('release')->nullable();
             $table->integer('duration')->nullable()->comment('Duration of the episode in minutes');
-            $table->string('thumbnail_url')->nullable()->comment('Thumbnail URL of the episode');
+            $table->string('poster_url')->nullable()->comment('Poster URL of the episode');
+            $table->string('trailer_url')->nullable()->comment('Trailer URL of the episode');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

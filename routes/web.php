@@ -7,6 +7,7 @@ use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GenresController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProxyController;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +54,6 @@ Route::get('/series/{series_id}/episodes/create', [EpisodeController::class, 'cr
 Route::post('/series/{series_id}/episodes/store', [EpisodeController::class, 'store'])->name('series.episodes.store');
 Route::get('/series/{series_id}/episodes/{episode}/edit', [EpisodeController::class, 'edit'])->name('series.episodes.edit');
 Route::patch('/series/{series_id}/episodes/{episode}/update', [EpisodeController::class, 'update'])->name('series.episodes.update');
-Route::delete('/series/{series_id}/episodes/{episode}/destroy', [EpisodeController::class, 'destroy'])->name('series.episodes.destroy');
 Route::get('/series/{series_id}/episodes/{episode}/show', [EpisodeController::class, 'show'])->name('series.episodes.show');
 
 Route::get('/series/{series_id}/seasons/{season_id}/episodes', [EpisodeController::class, 'index'])->name('series.seasons.episodes.index');
@@ -61,17 +61,18 @@ Route::get('/series/{series_id}/seasons/{season_id}/episodes/create', [EpisodeCo
 Route::post('/series/{series_id}/seasons/{season_id}/episodes/store', [EpisodeController::class, 'store'])->name('series.seasons.episodes.store');
 Route::get('/series/{series_id}/seasons/{season_id}/episodes/{episode}/edit', [EpisodeController::class, 'edit'])->name('series.seasons.episodes.edit');
 Route::patch('/series/{series_id}/seasons/{season_id}/episodes/{episode}/update', [EpisodeController::class, 'update'])->name('series.seasons.episodes.update');
-Route::delete('/series/{series_id}/seasons/{season_id}/episodes/{episode}/destroy', [EpisodeController::class, 'destroy'])->name('series.seasons.episodes.destroy');
+Route::delete('/episodes/{episode}/destroy', [EpisodeController::class, 'destroy'])->name('episodes.destroy');
 Route::get('/series/{series_id}/seasons/{season_id}/episodes/{episode}/show', [EpisodeController::class, 'show'])->name('series.seasons.episodes.show');
-
+Route::post('/episodes/{episode}/update-status', [EpisodeController::class, 'updateStatus']);
 
 Route::get('/series/{series_id}/seasons', [SeasonController::class, 'index'])->name('series.seasons.index');
 Route::get('/series/{series_id}/seasons/create', [SeasonController::class, 'create'])->name('series.seasons.create');
 Route::post('/series/{series_id}/seasons/store', [SeasonController::class, 'store'])->name('series.seasons.store');
 Route::get('/series/{series_id}/seasons/{season}/edit', [SeasonController::class, 'edit'])->name('series.seasons.edit');
 Route::patch('/series/{series_id}/seasons/{season}/update', [SeasonController::class, 'update'])->name('series.seasons.update');
-Route::delete('/series/{series_id}/seasons/{season}/destroy', [SeasonController::class, 'destroy'])->name('series.seasons.destroy');
 Route::get('/series/{series_id}/seasons/{season}/show', [SeasonController::class, 'show'])->name('series.seasons.show');
+Route::delete('/seasons/{season}/destroy', [SeasonController::class, 'destroy'])->name('seasons.destroy');
+Route::post('/seasons/{season}/update-status', [SeasonController::class, 'updateStatus']);
 
 Route::resource('series', SeriesController::class);
 Route::post('/series/{serie}/update-status', [SeriesController::class, 'updateStatus']);
@@ -81,6 +82,10 @@ Route::resource('categories', CategoryController::class);
 
 //Genres Routes
 Route::resource('genres', GenresController::class);
+
+Route::resource('plans', PlanController::class);
+Route::post('/plans/{plan}/update-status', [PlanController::class, 'updateStatus']);
+
 
 // File Upload Routes
 Route::post('/upload', [FileController::class, 'upload']);

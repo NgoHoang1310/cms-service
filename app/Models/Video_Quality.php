@@ -73,5 +73,4 @@ class Video_Quality extends Model
     {
         return $this->belongsTo(Movie::class, 'video_id');
     }
-
 }

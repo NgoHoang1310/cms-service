@@ -1,13 +1,12 @@
 @php
     use App\Helpers\CUtils;
-    /* @var $episodes app\models\Episode */
+    /* @var $episode app\models\Episode */
     /* @var $series_id integer */
     /* @var $season_id integer */
 
     $routeCreate = !empty($season_id) ? 'series.seasons.episodes.create' : 'series.episodes.create';
     $routeShow = !empty($season_id) ? 'series.seasons.episodes.show' : 'series.episodes.show';
     $routeEdit = !empty($season_id) ? 'series.seasons.episodes.edit' : 'series.episodes.edit';
-    $routeDestroy = !empty($season_id) ? 'series.seasons.episodes.destroy' : 'series.episodes.destroy';
 
 @endphp
 
@@ -44,7 +43,7 @@
                                         <td>
                                             <div class="d-flex">
                                                 <img
-                                                    src="{{ \App\Facades\Firebase::getPublicFileUrl($episode->thumbnail_url) }}"
+                                                    src="{{ \App\Facades\Firebase::getPublicFileUrl($episode->poster_url) }}"
                                                     loading="lazy" alt="image"
                                                     class="rounded-2 avatar avatar-55 img-fluid"/>
                                                 <div class="d-flex flex-column ms-3 justify-content-center">
@@ -68,7 +67,7 @@
                                                     <input
                                                         {{ $episode->status ? 'checked' : '' }} class="form-check-input"
                                                         type="checkbox"
-                                                        data-movie-id="{{ $episode->id }}"
+                                                        data-episode-id="{{ $episode->id }}"
                                                     />
                                                 </div>
                                             </div>
@@ -87,7 +86,7 @@
                                                 </a>
                                                 <a class="btn btn-sm btn-icon btn-outline-danger delete-btn rounded"
                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Xoá"
-                                                   data-url="{{ route($routeDestroy, ['series_id' => $series_id, 'season_id' => $season_id, 'episode' => $episode]) }}"
+                                                   data-url="{{ route('episodes.destroy', ['episode' => $episode]) }}"
                                                 >
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
@@ -109,7 +108,7 @@
     <script>
         // Lắng nghe sự kiện thay đổi của checkbox
         $('.form-check-input').on('change', function () {
-            var movieId = $(this).data('season-id');  // Lấy movie ID từ data attribute
+            var movieId = $(this).data('episode-id');  // Lấy movie ID từ data attribute
             var status = $(this).prop('checked') ? 1 : 0;  // Kiểm tra trạng thái checkbox (checked or not)
 
             // Gửi yêu cầu AJAX

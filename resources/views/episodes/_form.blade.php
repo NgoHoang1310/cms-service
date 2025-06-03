@@ -54,7 +54,7 @@
                     <!-- toggle switch -->
                     <!-- common inputs -->
                     <input id="episode_number" name="episode_number" type="text" class="form-control "
-                           placeholder="Mùa hiện tại" value="{{ $episode->episode_number }}" min="" multiple=""
+                           placeholder="Tập hiện tại" value="{{ $episode->episode_number }}" min="" multiple=""
                            {{ $formType === 'show' ? 'disabled' : '' }} required/>
                 </div>
             </div>
@@ -146,16 +146,16 @@
                     <!-- textarea input -->
                     <!-- toggle switch -->
                     <!-- common inputs -->
-                    @if($formType !== 'show' || !empty(Firebase::getPublicFileUrl($episode->thumbnail_url)))
+                    @if($formType !== 'show' || !empty(Firebase::getPublicFileUrl($episode->poster_url)))
                         <input id="poster_url" type="file" name="file" class="filepond" placeholder=""
                                value="" accept="image/png, image/jpeg, image/gif"
-                               data-url="{{ Firebase::getPublicFileUrl($episode->thumbnail_url) }}"
-                               data-path="{{ $episode->thumbnail_url }}"
+                               data-url="{{ Firebase::getPublicFileUrl($episode->poster_url) }}"
+                               data-path="{{ $episode->poster_url }}"
                             {{ $formType === 'show' ? 'disabled' : '' }}
                         />
-                        <input type="hidden" name="poster_url" value="{{ $episode->thumbnail_url }}"/>
+                        <input type="hidden" name="poster_url" value="{{ $episode->poster_url }}"/>
                     @endif
-                    @if($formType === 'show' && empty(Firebase::getPublicFileUrl($episode->thumbnail_url)))
+                    @if($formType === 'show' && empty(Firebase::getPublicFileUrl($episode->poster_url)))
                         <br>
                         <img class="img-thumbnail rounded-3" src="{{ asset('images/no-image-poster.png') }}">
                     @endif
@@ -167,9 +167,9 @@
                         <label class="form-label flex-grow-1" for="video">
                             <strong>Video</strong>:
                         </label>
-                        @if($formType !== 'show' || !empty($movie->videoQualities[0]->video_url))
+                        @if($formType !== 'show' || !empty($episode->videoQualities[3]->video_url))
                             <div id="video-wrapper"
-                                 style="{{ ($formType !== 'create' && !empty($movie->videoQualities[0]->video_url)) ? '' : 'display: none;' }}"
+                                 style="{{ ($formType !== 'create' && !empty($episode->videoQualities[3]->video_url)) ? '' : 'display: none;' }}"
                             >
                                 <div class="video-container">
                                     <video
@@ -178,7 +178,7 @@
                                         controls
                                         preload="auto"
                                         data-setup="{}">
-                                        <source src="{{ $movie->videoQualities[0]->video_url ?? '' }}"
+                                        <source src="{{ $episode->videoQualities[0]->video_url ?? '' }}"
                                                 type="application/x-mpegURL"/>
                                     </video>
                                     @if($formType !== 'show')
@@ -189,12 +189,12 @@
                                 </div>
                             </div>
                             <div id="video-upload-wrapper"
-                                 style="{{ ($formType !== 'create' && !empty($movie->videoQualities[0]->video_url)) ? 'display: none;' : '' }}">
+                                 style="{{ ($formType !== 'create' && !empty($episode->videoQualities[0]->video_url)) ? 'display: none;' : '' }}">
                                 <input id="video" type="file" name="file" class="filepond" accept="video/mp4"/>
                                 <input type="hidden" name="temp_path"/>
                             </div>
                         @endif
-                        @if($formType === 'show' && empty($movie->videoQualities[0]->video_url))
+                        @if($formType === 'show' && empty($episode->videoQualities[0]->video_url))
                             <img class="img-thumbnail rounded-3" src="{{ asset('images/no-video.jpg') }}">
                         @endif
                     </div>
@@ -224,9 +224,9 @@
                 $('.btn-close-white').on('click', function () {
                     $('#video-wrapper').hide();
                     $('#video-upload-wrapper').show();
-                    const id = @json($movie->id);
-                    const uuid = @json($movie->uuid);
-                    const content_type = @json($movie->videoQualities[0]->video_type);
+                    const id = @json($episode->id);
+                    const uuid = @json($episode->uuid);
+                    const content_type = @json($episode->videoQualities[0]->video_type);
                     fetch('/upload/video-s3/revert', {
                         method: 'DELETE',
                         headers: {

@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use Carbon\Carbon;
+use http\Client\Request;
 
 class CUtils
 {
@@ -51,6 +52,12 @@ class CUtils
 
         // Nếu không match, trả lại null
         return null;
+    }
+
+
+    public static function host()
+    {
+        return \Illuminate\Support\Facades\Request::host();
     }
 
 }

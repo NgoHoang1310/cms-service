@@ -5,14 +5,24 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SeriesRequest;
 use App\Models\Category;
 use App\Models\Genres;
-use App\Models\Movie;
 use App\Models\Series;
+use App\Services\FirebaseService;
+use App\Services\Queue\Producers\VideoProducer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class SeriesController extends Controller
 {
+    protected FirebaseService $firebaseService;
+    protected VideoProducer $videoProducer;
+
+    public function __construct(FirebaseService $firebaseService, VideoProducer $videoProducer)
+    {
+        $this->videoProducer = $videoProducer;
+        $this->firebaseService = $firebaseService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -96,7 +106,7 @@ class SeriesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Series $series)
+    public function update(SeriesRequest $request, Series $series)
     {
         DB::beginTransaction();
         try {
@@ -133,6 +143,27 @@ class SeriesController extends Controller
     {
         DB::beginTransaction();
         try {
+            $series->loadMissing('seasons.episodes', 'episodes');
+            if ($series->seasons->isNotEmpty()) {
+                foreach ($series->seasons as $season) {
+                    foreach ($season->episodes as $episode) {
+                        $this->videoProducer->processVideo([
+                            'id' => $episode->id,
+                            'uuid' => $episode->uuid,
+                            'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
+                        ], VideoProducer::PROCESSING_TYPE_REVERT);
+                    }
+                }
+            } elseif($series->episodes->isNotEmpty()) {
+                foreach ($series->episodes as $episode) {
+                    $this->videoProducer->processVideo([
+                        'id' => $episode->id,
+                        'uuid' => $episode->uuid,
+                        'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
+                    ], VideoProducer::PROCESSING_TYPE_REVERT);
+                }
+            }
+
             $series->delete();
             DB::commit();
             return response()->json([

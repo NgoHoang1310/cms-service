@@ -38,7 +38,7 @@
                                         <td>
                                             <div class="d-flex">
                                                 <img
-                                                    src="{{ \App\Facades\Firebase::getPublicFileUrl($serie->poster_url) }}"
+                                                    src="{{ \App\Facades\Firebase::getPublicFileUrl($serie->backdrop_url) }}"
                                                     loading="lazy" alt="image"
                                                     class="rounded-2 avatar avatar-55 img-fluid"/>
                                                 <div class="d-flex flex-column ms-3 justify-content-center">

@@ -7,6 +7,35 @@
     /* @var $formType string */
 @endphp
 
+@push('styles')
+    <style>
+        .video-container {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            border-radius: 10px;
+        }
+
+        .video-container .video-js.vjs-default-skin {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .video-container .btn.btn-close-white {
+            position: absolute;
+            color: white;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+    </style>
+@endpush
 <div class="section-form">
     <fieldset>
         <legend>Mùa phim</legend>
@@ -28,7 +57,7 @@
             <div class="col-sm-12">
                 <div class="form-group px-3 ">
                     <label class="form-label flex-grow-1" for="title">
-                        <strong>Tiêu đề</strong> <span class="text-danger">*</span>:
+                        <strong>Tiêu đề</strong>:
                     </label>
 
                     <!-- textarea input -->
@@ -36,7 +65,7 @@
                     <!-- common inputs -->
                     <input id="title" name="title" type="text" class="form-control "
                            placeholder="Tiêu đề" value="{{ $season->title }}" min="" multiple=""
-                           {{ $formType === 'show' ? 'disabled' : '' }} required/>
+                           {{ $formType === 'show' ? 'disabled' : '' }}/>
                 </div>
             </div>
             <div class="col-sm-12">

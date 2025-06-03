@@ -1,6 +1,7 @@
 @php
-    /* @var $season app\models\Season */
+    /* @var $episode app\models\Episode */
     /* @var $series_id integer */
+    /* @var $season_id integer */
 
 @endphp
 @extends('layouts.app')
@@ -10,7 +11,7 @@
             <div class="col-sm-12">
                 <h2 class="mb-5">Chi tiết mùa phim</h2>
                 <form>
-                    @include('seasons._form', ['season' => $season, 'series_id' => $series_id, 'formType' => 'show'])
+                    @include('episodes._form', ['episode' => $episode, 'series_id' => $series_id, 'season_id' => $season_id, 'formType' => 'show'])
                 </form>
             </div>
         </div>

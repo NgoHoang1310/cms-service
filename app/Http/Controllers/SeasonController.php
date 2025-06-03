@@ -2,14 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SeasonRequest;
 use App\Models\Season;
 use App\Models\Series;
+use App\Services\FirebaseService;
+use App\Services\Queue\Producers\VideoProducer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SeasonController extends Controller
 {
+    protected FirebaseService $firebaseService;
+    protected VideoProducer $videoProducer;
+
+    public function __construct(FirebaseService $firebaseService, VideoProducer $videoProducer)
+    {
+        $this->videoProducer = $videoProducer;
+        $this->firebaseService = $firebaseService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,7 +50,7 @@ class SeasonController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $series_id)
+    public function store(SeasonRequest $request, $series_id)
     {
         DB::beginTransaction();
         try {
@@ -76,7 +89,7 @@ class SeasonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $series_id, Season $season)
+    public function update(SeasonRequest $request, $series_id, Season $season)
     {
         DB::beginTransaction();
         try {
@@ -94,10 +107,20 @@ class SeasonController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($series_id, Season $season)
+    public function destroy(Season $season)
     {
         DB::beginTransaction();
         try {
+            $season->loadMissing( 'episodes');
+            if ($season->episodes->isNotEmpty()) {
+                foreach ($season->episodes as $episode) {
+                    $this->videoProducer->processVideo([
+                        'id' => $episode->id,
+                        'uuid' => $episode->uuid,
+                        'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
+                    ], VideoProducer::PROCESSING_TYPE_REVERT);
+                }
+            }
             $season->delete();
             DB::commit();
             return response()->json([
@@ -113,5 +136,12 @@ class SeasonController extends Controller
                 'message' => 'Xóa mùa phim thất bại: ' . $exception->getMessage()
             ]);
         }
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        $season = Season::find($id);
+        $status = $request->get('status');
+        return $this->changeStatus($season, $status);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EpisodeRequest;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
@@ -59,7 +60,7 @@ class EpisodeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $series_id, $season_id = null)
+    public function store(EpisodeRequest $request, $series_id, $season_id = null)
     {
         DB::beginTransaction();
         try {
@@ -110,17 +111,17 @@ class EpisodeController extends Controller
                     'status' => Video_Quality::STATUS_PROCESSING,
                 ]
             ]);
-//            $tempPath = $request->input('temp_path');
-//            if (!empty($tempPath)) {
-//                $this->videoProducer->processVideo([
-//                    'id' => $model->id,
-//                    'title' => $model->title,
-//                    'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
-//                    'slug' => $model->slug,
-//                    'uuid' => $model->uuid,
-//                    'tempPath' => $tempPath,
-//                ]);
-//            }
+            $tempPath = $request->input('temp_path');
+            if (!empty($tempPath)) {
+                $this->videoProducer->processVideo([
+                    'id' => $model->id,
+                    'title' => $model->title,
+                    'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
+                    'slug' => $model->slug,
+                    'uuid' => $model->uuid,
+                    'tempPath' => $tempPath,
+                ]);
+            }
             DB::commit();
             $redirectUrl = !empty($season_id) ? 'series.seasons.episodes.index' : 'series.episodes.index';
             return redirect()->route($redirectUrl, ['series_id' => $series_id, 'season_id' => $season_id])->with('success', 'Tạo tập phim thành công');
@@ -133,32 +134,85 @@ class EpisodeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($series_id, $season_id = null, Episode $episode)
     {
-        //
+        return view('episodes.show', compact('series_id', 'season_id', 'episode'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($series_id, $season_id = null, Episode $episode)
     {
-        //
+        return view('episodes.edit', compact('series_id', 'season_id', 'episode'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $series_id, $season_id = null, Episode $episode)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $data = $request->except(['_token', 'file']);
+            $episode->update($data);
+
+            $tempPath = $request->input('temp_path');
+            if (!empty($tempPath)) {
+                $episode->videoQualities()->update([
+                    'status' => Video_Quality::STATUS_PROCESSING
+                ]);
+                $this->videoProducer->processVideo([
+                    'id' => $episode->id,
+                    'title' => $episode->title,
+                    'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
+                    'slug' => $episode->slug,
+                    'uuid' => $episode->uuid,
+                    'tempPath' => $tempPath,
+                ]);
+            }
+            DB::commit();
+            $redirectUrl = !empty($season_id) ? 'series.seasons.episodes.index' : 'series.episodes.index';
+            return redirect()->route($redirectUrl, ['series_id' => $series_id, 'season_id' => $season_id])->with('success', 'Cập nhật phim thành công');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Cập nhật phim thất bại: ' . $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Episode $episode)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->videoProducer->processVideo([
+                'id' => $episode->id,
+                'uuid' => $episode->uuid,
+                'content_type' => Series::CONTENT_TARGET_TYPE_SERIES,
+            ], VideoProducer::PROCESSING_TYPE_REVERT);
+            $episode->delete();
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa phim thành công !'
+            ]);
+
+        } catch (\Exception $exception) {
+            // Handle exception
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Xóa phim thất bại: ' . $exception->getMessage()
+            ]);
+        }
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        $episode = Episode::find($id);
+        $status = $request->get('status');
+        return $this->changeStatus($episode, $status);
     }
 }

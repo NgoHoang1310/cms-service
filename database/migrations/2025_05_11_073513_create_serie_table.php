@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('age')->nullable();
             $table->text('description')->nullable();
             $table->timestamp('release')->nullable();
-            $table->integer('duration')->nullable();
             $table->string('actors')->nullable();
             $table->string('directors')->nullable();
             $table->string('country')->nullable();

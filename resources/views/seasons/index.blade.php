@@ -1,6 +1,6 @@
 @php
     use App\Helpers\CUtils;
-    /* @var $seasons app\models\Season */
+    /* @var $season app\models\Season */
     /* @var $series_id integer */
 
 @endphp
@@ -41,24 +41,24 @@
                                                     loading="lazy" alt="image"
                                                     class="rounded-2 avatar avatar-55 img-fluid"/>
                                                 <div class="d-flex flex-column ms-3 justify-content-center">
-                                                    <h6 class="text-capitalize">{{ $season->title }}</h6>
+                                                    <h6 class="text-capitalize">{{ $season->season_number }}</h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            {{ $season->season_number }}
+                                            {{ $season->title }}
                                         </td>
                                         <td>
                                             <small>{{ CUtils::format_date($season->release) }}</small>
                                         </td>
-                                        <td>10 tập</td>
+                                        <td>{{ $season->countEpisodes() }} tập</td>
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <div class="form-check form-switch ms-2">
                                                     <input
                                                         {{ $season->status ? 'checked' : '' }} class="form-check-input"
                                                         type="checkbox"
-                                                        data-movie-id="{{ $season->id }}"
+                                                        data-season-id="{{ $season->id }}"
                                                     />
                                                 </div>
                                             </div>
@@ -77,7 +77,7 @@
                                                 </a>
                                                 <a class="btn btn-sm btn-icon btn-outline-danger delete-btn rounded"
                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Xoá"
-                                                   data-url="{{ route('series.seasons.destroy', ['series_id' => $series_id, 'season' => $season]) }}"
+                                                   data-url="{{ route('seasons.destroy', ['season' => $season]) }}"
                                                 >
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
@@ -99,12 +99,12 @@
     <script>
         // Lắng nghe sự kiện thay đổi của checkbox
         $('.form-check-input').on('change', function () {
-            var movieId = $(this).data('season-id');  // Lấy movie ID từ data attribute
+            var seasonId = $(this).data('season-id');  // Lấy movie ID từ data attribute
             var status = $(this).prop('checked') ? 1 : 0;  // Kiểm tra trạng thái checkbox (checked or not)
 
             // Gửi yêu cầu AJAX
             $.ajax({
-                url: '/seasons/' + movieId + '/update-status',  // URL tới route bạn đã định nghĩa
+                url: '/seasons/' + seasonId + '/update-status',  // URL tới route bạn đã định nghĩa
                 method: 'POST',  // Phương thức HTTP
                 data: {
                     _token: '{{ csrf_token() }}',  // CSRF token (bắt buộc trong Laravel)

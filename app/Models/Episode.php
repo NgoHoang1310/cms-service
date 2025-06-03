@@ -6,8 +6,10 @@
 
 namespace App\Models;
 
+use App\Traits\BaseTrait as Base;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,7 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property Carbon|null $release
  * @property int|null $duration
- * @property string|null $thumbnail_url
+ * @property string|null $poster_url
+ * @property string|null $trailer_url
  * @property int $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -34,6 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Episode extends Model
 {
+    use HasFactory, Base;
+
 	protected $table = 'episode';
 
 	protected $casts = [
@@ -55,7 +60,8 @@ class Episode extends Model
 		'description',
 		'release',
 		'duration',
-		'thumbnail_url',
+		'poster_url',
+        'trailer_url',
 		'status'
 	];
 

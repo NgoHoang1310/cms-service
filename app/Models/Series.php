@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $age
  * @property string|null $description
  * @property string|null $release
- * @property int|null $duration
  * @property int|null $file
  * @property string|null $actors
  * @property string|null $directors
@@ -68,7 +67,6 @@ class Series extends Model
         'age',
         'description',
         'release',
-        'duration',
         'actors',
         'directors',
         'country',
@@ -89,6 +87,8 @@ class Series extends Model
         static::deleting(function ($serie) {
             $serie->categories()->detach(); // Xóa các bản ghi liên kết
             $serie->genres()->detach(); // Xóa các bản ghi liên kết
+            $serie->seasons()->delete(); // Xóa các bản ghi liên kết
+            $serie->episodes()->delete(); // Xóa các bản ghi liên kết
         });
     }
 

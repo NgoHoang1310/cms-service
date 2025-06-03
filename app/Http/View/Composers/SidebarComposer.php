@@ -62,7 +62,18 @@ class SidebarComposer
                 'title' => 'Thể loại phim',
                 'icon' => 'pricing',
                 'link' => '/genres',
+            ],
+            [
+                'title' => 'Gói cước',
+                'icon' => 'pricing',
+                'link' => '/plans',
+            ],
+            [
+                'title' => 'Giao dịch',
+                'icon' => 'payment',
+                'link' => '/payments',
             ]
+
         ];
 
         foreach ($sidebarMenu as &$item) {

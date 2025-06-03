@@ -81,20 +81,6 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group px-3 ">
-                    <label class="form-label flex-grow-1" for="duration">
-                        <strong>Thời lượng</strong> <span class="text-danger">*</span>:
-                    </label>
-
-                    <!-- textarea input -->
-                    <!-- toggle switch -->
-                    <!-- common inputs -->
-                    <input id="duration" name="duration" type="text" class="form-control "
-                           placeholder="Thời lượng" value="{{ $serie->duration }}" min="" multiple=""
-                           {{ $formType === 'show' ? 'disabled' : '' }} required/>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group px-3 ">
                     <label class="form-label flex-grow-1" for="directors">
                         <strong>Đạo diễn</strong>:
                     </label>

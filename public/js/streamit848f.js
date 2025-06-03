@@ -793,7 +793,7 @@ function reloadScript(src) {
 }
 
 function initImageFallback() {
-    const fallback = '../images/avatars/no-image-fallback.png'; // ảnh dự phòng
+    const fallback = 'http://127.0.0.1:8085/images/avatars/no-image-fallback.png'; // ảnh dự phòng
     console.log(fallback)
     document.querySelectorAll('img').forEach(img => {
         img.onerror = () => {

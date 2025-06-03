@@ -528,6 +528,7 @@
     <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://cdn.tiny.cloud/1/iun7itnnrsng7lyoqoh7h9fudy8lhh4nxn96yve10porv1ff/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
     <!-- Video.js plugin CDN -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
