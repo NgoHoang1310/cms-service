@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Voucher> $vouchers
+ *
  * @package App\Models
  */
 class Plan extends Model
@@ -47,4 +49,10 @@ class Plan extends Model
 		'max_resolution',
 		'status'
 	];
+
+    public function vouchers()
+    {
+        return $this->belongsToMany(Voucher::class, 'voucher_plan')->withTimestamps();
+    }
+
 }

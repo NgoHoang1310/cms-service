@@ -1,5 +1,6 @@
 @php
     /* @var $plan app\models\Plan */
+    /* @var $vouchers app\models\Voucher[]  */
 @endphp
 @extends('layouts.app')
 @section('content')
@@ -11,7 +12,7 @@
                       novalidate>
                     @csrf
                     @method('PATCH')
-                    @include('plans._form', ['plan' => $plan, 'formType' => 'edit'])
+                    @include('plans._form', ['plan' => $plan, 'vouchers' => $vouchers, 'formType' => 'edit'])
                 </form>
             </div>
         </div>

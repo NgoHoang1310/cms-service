@@ -49,6 +49,11 @@
                                         </td>
                                         <td>
                                             <div class="flex align-items-center list-user-action">
+                                                <a class="btn btn-sm btn-icon btn-outline-success rounded"
+                                                   href="{{ route('plans.show', $plan) }}"
+                                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Xem">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
                                                 <a class="btn btn-sm btn-icon btn-warning rounded"
                                                    data-bs-original-title="Sửa"
                                                    href="{{ route('plans.edit', $plan) }}"

@@ -69,6 +69,11 @@ class SidebarComposer
                 'link' => '/plans',
             ],
             [
+                'title' => 'Khuyến mại',
+                'icon' => 'pricing',
+                'link' => '/vouchers',
+            ],
+            [
                 'title' => 'Giao dịch',
                 'icon' => 'payment',
                 'link' => '/payments',

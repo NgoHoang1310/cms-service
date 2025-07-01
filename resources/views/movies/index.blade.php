@@ -56,7 +56,7 @@
                                             <small>{{ CUtils::format_date($movie->release) }}</small>
                                         </td>
                                         <td>{{ $movie->duration }} phút</td>
-                                        <td><span
+                                        <td><span id="badge-{{ $movie->id }}"
                                                 class="badge {{ $movie->getStatusLabelAttribute() }}">{{ $movie->getStatusTextAttribute() }}</span>
                                         </td>
                                         <td>
@@ -119,5 +119,14 @@
                 },
             });
         });
+
+        $(document).ready(function () {
+            window.socket.emit('joinRoom', ['broadcast'])
+            window.socket.on('notify', function (payload) {
+                $('tbody tr td #badge-' + payload?.target_id ).removeClass().addClass('badge bg-success').text('Sẵn sàng');
+            });
+        });
+
+
     </script>
 @endpush

@@ -1,5 +1,7 @@
 @php
     /* @var $plan app\models\Plan */
+    /* @var $vouchers app\models\Voucher[] */
+
 @endphp
 @extends('layouts.app')
 @section('content')
@@ -9,7 +11,7 @@
                 <h2 class="mb-5">Thêm gói cước</h2>
                 <form method="POST" action="{{ route('plans.store') }}" class="needs-validation" novalidate>
                     @csrf
-                    @include('plans._form', ['plan' => $plan, 'formType' => 'create'])
+                    @include('plans._form', ['plan' => $plan, 'voucher' => $vouchers, 'formType' => 'create'])
                 </form>
             </div>
         </div>

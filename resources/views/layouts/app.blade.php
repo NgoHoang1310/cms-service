@@ -529,6 +529,8 @@
     <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script src="https://cdn.tiny.cloud/1/iun7itnnrsng7lyoqoh7h9fudy8lhh4nxn96yve10porv1ff/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Video.js plugin CDN -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
@@ -615,6 +617,20 @@
             toastr.info("{{ session('info') }}", "Thông báo");
             @endif
         });
+
+        $(document).ready(function () {
+            const socket = io("http://localhost:4000"); // 🔁 Thay đổi port nếu khác
+
+            socket.on("connect", () => {
+                console.log(`✅ Connected: ${socket.id}`);
+            });
+
+            socket.on("disconnect", () => {
+                console.log(`❌ Disconnected`);
+            });
+
+            window.socket = socket;
+        })
     </script>
 
     <!-- Custom Script -->

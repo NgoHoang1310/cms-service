@@ -1,5 +1,7 @@
 @php
     /* @var $plan app\models\Plan */
+    /* @var $voucher app\models\Voucher */
+    /* @var $selectedVouchers app\models\Voucher[] */
 @endphp
 <div class="section-form">
     <fieldset>
@@ -66,6 +68,24 @@
                         @foreach(\App\Models\Video_Quality::$arrQuality as $key => $item)
                             <option value="{{ $key }}" {{ $item == $key ? 'selected' : '' }}>
                                 {{ $item }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group px-3">
+                    <label class="form-label flex-grow-1"
+                           for="vouchers"><strong>Mã khuyến mại</strong></label>
+                    <select id="vouchers" type="select"
+                            name="vouchers[]"
+                            multiple
+                            class="form-control select2-basic-multiple"
+                            {{ $formType === 'show' ? 'disabled' : '' }}
+                            placeholder="Chọn mã giảm giá">
+                        @foreach($vouchers as $voucher)
+                            <option value="{{ $voucher->id }}" {{ in_array($voucher->id, old('vouchers', $selectedVouchers ?? [])) ? 'selected' : '' }}>
+                                {{ $voucher->code }}
                             </option>
                         @endforeach
                     </select>

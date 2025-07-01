@@ -22,38 +22,38 @@
       crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Library / Plugin Css Build -->
   <link rel="stylesheet" href="{{ asset('css/core/libs.min.css') }}">
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
   <!-- streamit Design System Css -->
   <link rel="stylesheet" href="{{ asset('css/streamit.min848f.css?v=5.2.1') }}">
-  
+
   <!-- Custom Css -->
   <link rel="stylesheet" href="{{ asset('css/custom.min848f.css?v=5.2.1') }}">
   <link rel="stylesheet" href="{{ asset('css/dashboard-custom.min848f.css?v=5.2.1') }}">
-  
+
   <!-- RTL Css -->
   <link rel="stylesheet" href="{{ asset('css/rtl.min848f.css?v=5.2.1') }}">
-  
+
   <!-- Customizer Css -->
   <link rel="stylesheet" href="{{ asset('css/customizer.min848f.css?v=5.2.1') }}">
-  
-  
-  
+
+
+
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com/">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
   <link
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300&amp;display=swap"
       rel="stylesheet">
-  
+
   <link rel="stylesheet" href="{{ asset('vendor/select2/dist/css/select2.min.css') }}"></head>
 
 <body class=" ">
@@ -90,16 +90,6 @@
                      </form>
                   </div>
                </div>
-               <div class="mt-3">
-                  <div class="d-flex justify-content-center links">Don't have an
-                     account?
-                     <a class="text-primary ms-2" href="sign-up">Sign Up</a>
-                  </div>
-                  <div class="d-flex justify-content-center links"><a class="f-link"
-                        href="recoverpw.html">Forgot
-                        your
-                        password?</a></div>
-               </div>
             </div>
          </div>
       </div>
@@ -109,22 +99,22 @@
   <!-- Library Bundle Script -->
   <script src="{{ asset('js/core/libs.min.js') }}"></script>
   <!-- Plugin Scripts -->
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
   <!-- Slider-tab Script -->
   <script src="{{ asset('js/plugins/slider-tabs.js') }}"></script>
-  
-  
-  
-  
-  
+
+
+
+
+
   <!-- Lodash Utility -->
   <script src="{{ asset('vendor/lodash/lodash.min.js') }}"></script>
   <!-- Utilities Functions -->
@@ -143,13 +133,13 @@
   <script src="{{ asset('js/streamit848f.js?v=5.2.1') }}" defer></script>
   <script src="{{ asset('js/sidebar848f.js?v=5.2.1') }}" defer></script>
   <script src="{{ asset('js/chart-custom848f.js?v=5.2.1') }}" defer></script>
-  
+
   <script src="{{ asset('js/plugins/select2848f.js?v=5.2.1') }}" defer></script>
-  
+
   <script src="{{ asset('js/plugins/flatpickr848f.js?v=5.2.1') }}" defer></script>
-  
+
   <script src="{{ asset('js/plugins/countdown848f.js?v=5.2.1') }}" defer></script>
-  
+
 </body>
 
 

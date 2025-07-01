@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\BaseTrait as Base;
 
@@ -78,5 +79,32 @@ class User extends Authenticatable
     public function isEditable()
     {
         return $this->provider === 'password';
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class, 'user_uuid', 'uuid');
+    }
+
+    public static function getNews()
+    {
+        return self::doesntHave('subscription')->count();
+    }
+
+    public static function getHasSubscription()
+    {
+        return self::has('subscription')->count();
+    }
+
+    public static function getRenewing()
+    {
+        return DB::table('user')
+            ->join('payment', 'payment.user_uuid', '=', 'user.uuid')
+            ->select('user.uuid')
+            ->groupBy('user.uuid')
+            ->havingRaw('COUNT(payment.id) >= 2')
+            ->where('payment.status', Payment::STATUS_SUCCESS)
+            ->get()
+            ->count();
     }
 }

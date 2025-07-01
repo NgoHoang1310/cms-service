@@ -671,6 +671,7 @@ Index Of Script
             confirmButtonColor: "#c03221"
         }).then((result) => {
             if (result.isConfirmed) {
+                console.log(deleteUrl)
                 $.ajax({
                     url: deleteUrl,
                     type: 'DELETE',

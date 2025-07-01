@@ -16,45 +16,45 @@
                 </svg>
             </i>
         </div>
-        <div class="d-flex align-items-center justify-content-between product-offcanvas">
-            <div class="breadcrumb-title border-end pe-3 d-none d-xl-block">
-                <small class="mb-0 text-capitalize">Home</small>
-            </div>
-            <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                 id="offcanvasBottom">
-                <div class="offcanvas-body">
-                    <ul class="iq-nav-menu list-unstyled">
-                        <li class="nav-item"><a class="nav-link active"
-                                                href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link "
-                                                href="movie/movie-list.html">Movie List</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link menu-arrow "
-                               data-bs-toggle="collapse" href="#tv-shows" role="button" aria-expanded="false"
-                               aria-controls="tv-shows">
-                                TV Shows
-                                <i class="right-icon">
-                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                                              stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </i>
-                            </a>
-                            <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                id="tv-shows">
-                                <li class="nav-item"><a class="nav-link "
-                                                        href="tv-shows/show-list.html">Show List</a></li>
-                                <li class="nav-item"><a class="nav-link "
-                                                        href="tv-shows/season.html">Season</a></li>
-                                <li class="nav-item"><a class="nav-link "
-                                                        href="tv-shows/episodes.html">Episodes</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+{{--        <div class="d-flex align-items-center justify-content-between product-offcanvas">--}}
+{{--            <div class="breadcrumb-title border-end pe-3 d-none d-xl-block">--}}
+{{--                <small class="mb-0 text-capitalize">Home</small>--}}
+{{--            </div>--}}
+{{--            <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"--}}
+{{--                 id="offcanvasBottom">--}}
+{{--                <div class="offcanvas-body">--}}
+{{--                    <ul class="iq-nav-menu list-unstyled">--}}
+{{--                        <li class="nav-item"><a class="nav-link active"--}}
+{{--                                                href="index.html">Home</a></li>--}}
+{{--                        <li class="nav-item"><a class="nav-link "--}}
+{{--                                                href="movie/movie-list.html">Movie List</a></li>--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a class="nav-link menu-arrow "--}}
+{{--                               data-bs-toggle="collapse" href="#tv-shows" role="button" aria-expanded="false"--}}
+{{--                               aria-controls="tv-shows">--}}
+{{--                                TV Shows--}}
+{{--                                <i class="right-icon">--}}
+{{--                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"--}}
+{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+{{--                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"--}}
+{{--                                              stroke-linecap="round" stroke-linejoin="round"></path>--}}
+{{--                                    </svg>--}}
+{{--                                </i>--}}
+{{--                            </a>--}}
+{{--                            <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"--}}
+{{--                                id="tv-shows">--}}
+{{--                                <li class="nav-item"><a class="nav-link "--}}
+{{--                                                        href="tv-shows/show-list.html">Show List</a></li>--}}
+{{--                                <li class="nav-item"><a class="nav-link "--}}
+{{--                                                        href="tv-shows/season.html">Season</a></li>--}}
+{{--                                <li class="nav-item"><a class="nav-link "--}}
+{{--                                                        href="tv-shows/episodes.html">Episodes</a></li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
         <div class="d-flex align-items-center">
             <button id="navbar-toggle" class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

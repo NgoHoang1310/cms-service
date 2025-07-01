@@ -6,8 +6,10 @@ use App\Http\Requests\MovieRequest;
 use App\Models\Category;
 use App\Models\Genres;
 use App\Models\Movie;
+use App\Models\Notification;
 use App\Models\Video_Quality;
 use App\Services\FirebaseService;
+use App\Services\Queue\Producers\SocketProducer;
 use App\Services\Queue\Producers\VideoProducer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -218,6 +220,7 @@ class MovieController extends Controller
 
         } catch (\Exception $exception) {
             // Handle exception
+            dd($exception->getMessage());
             DB::rollBack();
             return response()->json([
                 'success' => false,

@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
+ * @property-read Plan $plan
  * @package App\Models
  */
 class Subscription extends Model
@@ -42,4 +43,9 @@ class Subscription extends Model
 		'end_date',
 		'status'
 	];
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class, 'plan_id', 'id');
+    }
 }

@@ -58,7 +58,7 @@
                                             <small>{{ CUtils::format_date($episode->release) }}</small>
                                         </td>
                                         <td> {{ $episode->duration }}</td>
-                                        <td><span
+                                        <td><span id="badge-{{ $episode->id }}"
                                                 class="badge {{ $episode->getStatusLabelAttribute() }}">{{ $episode->getStatusTextAttribute() }}</span>
                                         </td>
                                         <td>
@@ -119,6 +119,13 @@
                     _token: '{{ csrf_token() }}',  // CSRF token (bắt buộc trong Laravel)
                     status: status  // Gửi status mới
                 },
+            });
+        });
+
+        $(document).ready(function () {
+            window.socket.emit('joinRoom', ['broadcast'])
+            window.socket.on('notify', function (payload) {
+                $('tbody tr td #badge-' + payload?.target_id ).removeClass().addClass('badge bg-success').text('Sẵn sàng');
             });
         });
     </script>

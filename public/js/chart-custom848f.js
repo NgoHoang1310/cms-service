@@ -1,4 +1,4 @@
-(function(jQuery) {
+    (function(jQuery) {
 
     "use strict";
     jQuery(document).ready(function() {
@@ -1482,41 +1482,54 @@ $(document).ready(function() {
 
 // top chart 1
  if(jQuery('#view-chart-01').length){
-       var options = {
-          series: [44, 55, 30, 30],
-          chart: {
-        width: 250,
-          type: 'donut',
-        },
-        colors:['#e20e02', '#f68a04', '#007aff','#545e75'],
-        labels: ["New Customer", "Exsisting Subscriber's", "Daily Visitor's", "Extented Subscriber's"],
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-            show: false,
-            width: 0
-        },
-        legend: {
-            show: false,
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
-        };
+     let labels = [];
+     let series = [];
 
-        var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
-        chart.render();
+     $.ajax({
+         url: '/users/chart',  // URL tới route bạn đã định nghĩa
+         method: 'GET',  // Phương thức HTTP
+     }).then((response) => {
+         if(response.success) {
+             labels = response.data.labels
+             series = response.data.values;
 
-      }
+             var options = {
+                 series: series,
+                 chart: {
+                     width: 250,
+                     type: 'donut',
+                 },
+                 colors:['#e20e02', '#f68a04', '#545e75'],
+                 labels: labels,
+                 dataLabels: {
+                     enabled: false
+                 },
+                 stroke: {
+                     show: false,
+                     width: 0
+                 },
+                 legend: {
+                     show: false,
+                 },
+                 responsive: [{
+                     breakpoint: 480,
+                     options: {
+                         chart: {
+                             width: 200
+                         },
+                         legend: {
+                             position: 'bottom'
+                         }
+                     }
+                 }]
+             };
+
+             var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
+             chart.render();
+         }
+     });
+
+ }
 
     // top chart 2
  if(jQuery('#view-chart-02').length){

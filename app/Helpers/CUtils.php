@@ -2,6 +2,7 @@
 namespace App\Helpers;
 use Carbon\Carbon;
 use http\Client\Request;
+use Illuminate\Support\Str;
 
 class CUtils
 {
@@ -58,6 +59,11 @@ class CUtils
     public static function host()
     {
         return \Illuminate\Support\Facades\Request::host();
+    }
+
+    public static function generateCouponCode(string $prefix = 'SALE', int $length = 6): string
+    {
+        return strtoupper($prefix . '-' . Str::random($length));
     }
 
 }

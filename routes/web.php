@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\SeriesController;
@@ -7,6 +8,8 @@ use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GenresController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProxyController;
@@ -28,15 +31,12 @@ Route::get('/sign-in', function () {
     return view('auth/sign-in');
 });
 
-Route::get('/sign-up', function () {
-    return view('auth/sign-up');
-});
-
 // Dashboard Routes
 
-Route::get('/', function () {
-    return view('dashboard/dash-board');
-});
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/users/chart', [DashboardController::class, 'getCustomerChart']);
+Route::get('/revenue/chart', [DashboardController::class, 'getRevenueStats']);
+
 
 // User Routes
 Route::resource('users', UserController::class);
@@ -86,6 +86,14 @@ Route::resource('genres', GenresController::class);
 Route::resource('plans', PlanController::class);
 Route::post('/plans/{plan}/update-status', [PlanController::class, 'updateStatus']);
 
+// Payment Routes
+Route::get('payments/export', [PaymentController::class, 'exportRevenueExcel'])->name('revenue.export');
+Route::resource('payments', PaymentController::class);
+
+
+// Voucher Routes
+Route::resource('vouchers', VoucherController::class);
+Route::post('/vouchers/{voucher}/update-status', [VoucherController::class, 'updateStatus']);
 
 // File Upload Routes
 Route::post('/upload', [FileController::class, 'upload']);
