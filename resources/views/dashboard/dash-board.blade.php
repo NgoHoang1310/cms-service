@@ -199,20 +199,6 @@
                             <div class="card border-0">
                                 <div class="card-body bg-body p-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="iq-user-box bg-info"></div>
-                                        <div class=" ">
-                                            <p class="mb-0 font-size-14 line-height">Khách hàng<br>
-                                                vãng lai
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
-                            <div class="card border-0">
-                                <div class="card-body bg-body p-3">
-                                    <div class="d-flex align-items-center">
                                         <div class="iq-user-box bg-danger"></div>
                                         <div class=" ">
                                             <p class="mb-0 font-size-14 line-height">Khách hàng đã<br>
