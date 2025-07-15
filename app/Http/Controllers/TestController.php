@@ -12,8 +12,7 @@ class TestController extends Controller
             'id' => 1,
             'name' => 'John Doe',
             'birthdate' => '1990-01-01',
-            'email' => 'john@gmail.com',
-            'phone' => '123-456-7890',
+            'email' => 'john@gmail.com'
         ];
         return response()->json($users);
     }
