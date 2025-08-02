@@ -1,0 +1,66 @@
+name: Laravel CI/CD Deploy (No Releases)
+
+on:
+  push:
+    branches:
+      - main  # Deploy khi push lên nhánh main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Lấy code từ GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Cài PHP và extension cần thiết
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, intl, pdo_mysql
+          coverage: none
+
+      # 3. Cài Composer dependencies (cho build)
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+      # 4. Cài NPM dependencies và build assets
+      - name: Install NPM dependencies & build assets
+        run: |
+          npm ci
+          npm run build
+
+      # 6. Thêm SSH key để kết nối VPS
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 7. Deploy code trực tiếp lên server
+      - name: Deploy to server
+        env:
+          REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+        run: |
+          # Đồng bộ code mới lên server
+          rsync -az --delete \
+            --exclude=".git" \
+            --exclude="node_modules" \
+            --exclude="tests" \
+            ./ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/
+
+          # Cài Composer, migrate và cache trên server
+          ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST <<EOF
+            set -e
+            cd $REMOTE_PATH
+            composer install --no-dev --prefer-dist --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan queue:restart
+            chown -R _www:_www storage bootstrap/cache || true
+          EOF
