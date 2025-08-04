@@ -42,14 +42,9 @@ jobs:
           REMOTE_USER: ${{ secrets.DEPLOY_USER }}
           REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
         run: |
-          rsync -az --delete \
-            --exclude=".git" \
-            --exclude="node_modules" \
-            --exclude="tests" \
-            ./ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/
-
           ssh -o ProxyCommand="cloudflared access ssh --hostname $REMOTE_HOST" $REMOTE_USER@$REMOTE_HOST <<EOF
             cd $REMOTE_PATH
+            git pull origin main
             composer install
             php artisan migrate --force
             php artisan config:cache
