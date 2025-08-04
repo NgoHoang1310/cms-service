@@ -47,9 +47,6 @@ jobs:
           REMOTE_USER: ${{ secrets.DEPLOY_USER }}
           REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
         run: |
-          RSYNC_RSH="ssh -o ProxyCommand="cloudflared access ssh --hostname $REMOTE_HOST" -o StrictHostKeyChecking=no \
-          $REMOTE_USER@$REMOTE_HOST\"" \
-          rsync -az --delete ./ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/
           ssh -o ProxyCommand="cloudflared access ssh --hostname $REMOTE_HOST" -o StrictHostKeyChecking=no \
           $REMOTE_USER@$REMOTE_HOST <<EOF
             set -e
