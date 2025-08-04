@@ -51,9 +51,11 @@ jobs:
           $REMOTE_USER@$REMOTE_HOST\"" \
           rsync -az --delete ./ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/
           ssh -o ProxyCommand="cloudflared access ssh --hostname $REMOTE_HOST" -o StrictHostKeyChecking=no \
-          $REMOTE_USER@$REMOTE_HOST "echo ''" 2>&1 | sed -n '1,3p' <<EOF
+          $REMOTE_USER@$REMOTE_HOST <<EOF
             set -e
             cd $REMOTE_PATH
+            git fetch origin main
+            git reset --hard origin/main
             composer install
             php artisan migrate --force
             php artisan config:cache
