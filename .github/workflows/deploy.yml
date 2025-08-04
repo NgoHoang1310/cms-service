@@ -47,7 +47,9 @@ jobs:
           REMOTE_USER: ${{ secrets.DEPLOY_USER }}
           REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
         run: |
-          ssh -o ProxyCommand="cloudflared access ssh --hostname $REMOTE_HOST" $REMOTE_USER@$REMOTE_HOST <<EOF
+          ssh -o ProxyCommand="cloudflared access ssh --hostname $REMOTE_HOST" -o StrictHostKeyChecking=no \
+          $REMOTE_USER@$REMOTE_HOST "echo ''" 2>&1 | sed -n '1,3p' <<EOF
+            set -e
             cd $REMOTE_PATH
             git pull origin main
             composer install
