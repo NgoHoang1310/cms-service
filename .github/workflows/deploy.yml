@@ -29,6 +29,11 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
 
+      - name: Install cloudflared
+        run: |
+          curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared
+          chmod +x /usr/local/bin/cloudflared
+
       # 6. Thêm SSH key để kết nối VPS
       - name: Setup SSH key
         uses: webfactory/ssh-agent@v0.7.0
