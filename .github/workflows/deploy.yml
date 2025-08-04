@@ -48,18 +48,16 @@ jobs:
           REMOTE_USER: ${{ secrets.DEPLOY_USER }}
           REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
         run: |
-          # Đồng bộ code mới lên server
           rsync -az --delete \
             --exclude=".git" \
             --exclude="node_modules" \
             --exclude="tests" \
             ./ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/
 
-          # Cài Composer, migrate và cache trên server
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST <<EOF
             set -e
             cd $REMOTE_PATH
-            composer install --no-dev --prefer-dist --optimize-autoloader
+            composer install --prefer-dist --optimize-autoloader
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
