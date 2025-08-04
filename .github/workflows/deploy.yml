@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # Deploy khi push lên nhánh main
+  pull_request:
+    branches: 
+      - main  # Chạy CI khi có pull request vào nhánh main
 
 jobs:
   build-and-deploy:
