@@ -27,7 +27,7 @@ jobs:
 
       # 3. Cài Composer dependencies (cho build)
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+        run: composer install
 
       # 4. Cài NPM dependencies và build assets
       - name: Install NPM dependencies & build assets
