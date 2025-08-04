@@ -39,6 +39,5 @@ class RabbitMQServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->make(QueueService::class)->setup();
     }
 }
