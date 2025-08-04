@@ -15,7 +15,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0">
-                                        Tổng doanh thu
+                                        Tổng
                                     </p>
                                 </div>
                                 <div class="icon iq-icon-box-top rounded-circle bg-info">
