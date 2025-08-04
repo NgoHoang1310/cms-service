@@ -42,7 +42,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0 font-size-14">
-                                        Tổng phim đang chiếu
+                                        Tổng phim
                                     </p>
                                 </div>
                                 <div class="icon iq-icon-box-top rounded-circle bg-warning">
