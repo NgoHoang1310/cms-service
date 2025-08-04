@@ -57,7 +57,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST <<EOF
             set -e
             cd $REMOTE_PATH
-            composer install --prefer-dist --optimize-autoloader
+            composer install
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
