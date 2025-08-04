@@ -15,7 +15,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0">
-                                        Tổng
+                                        Tổng doanh thu
                                     </p>
                                 </div>
                                 <div class="icon iq-icon-box-top rounded-circle bg-info">
@@ -42,7 +42,7 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0 font-size-14">
-                                        Tổng phim
+                                        Tổng phim đang chiếu
                                     </p>
                                 </div>
                                 <div class="icon iq-icon-box-top rounded-circle bg-warning">
